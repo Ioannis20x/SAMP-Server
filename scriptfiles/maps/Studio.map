@@ -1,0 +1,4 @@
+new g_Object[3];
+g_Object[0] = CreateObject(2226, 1480.4094, -1698.8457, 15.3203, 0.0000, 0.0000, 0.0000); //od_copwindows
+g_Object[1] = CreateObject(18756, 1786.5529, -1299.3093, 121.1534, 0.0000, 0.0000, 90.2999); //ElevatorDoor1
+g_Object[2] = CreateObject(18756, 1786.7026, -1303.1279, 121.1534, 0.0000, 0.0000, -88.3999); //ElevatorDoor1

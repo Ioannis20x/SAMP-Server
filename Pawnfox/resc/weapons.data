@@ -1,0 +1,55 @@
+0%-%Unarmed%Yes%0%Melee
+1%331%Brass knuckles%Yes%0%Melee
+2%333%Golf club%Yes%1%Melee
+3%334%Nite stick%Yes%1%Melee
+4%335%Knife%Yes%1%Melee
+5%336%Baseball bat%Yes%1%Melee
+6%337%Shovel%Yes%1%Melee
+7%338%Pool cue%Yes%1%Melee
+8%339%Kantana%Yes%1%Melee
+9%341%Chainsaw%Yes%1%Melee
+10%321%Purple dildo%Yes%10%Melee
+11%320%Short vibrator%Yes%10%Melee
+12%319%Long vibrator%Yes%10%Melee
+13%318%White dildo%Yes%10%Melee
+14%325%Flowers%Yes%10%Melee
+15%326%Cane%Yes%10%Melee
+16%342%Grenades%Yes%8%Thrown
+17%343%Tear gas%Yes%8%Thrown
+18%344%Molotov cocktail%Yes%8%Thrown
+19%-%Vehicle missile%Yes%-%Special
+20%-%Hydra flare%Yes%-%Special
+21%-%Jetpack%Yes%-%Special
+22%346%9mm Pistol%Yes%2%Pistols
+23%347%Silenced pistol%Yes%2%Pistols
+24%348%Desert eagle%Yes%2%Pistols
+25%349%Shotgun%Yes%3%Shotguns
+26%351%Sawn-off shotgun%Yes%3%Shotguns
+27%350%Combat shotgun%Yes%3%Shotguns
+28%352%Micro Uzi (Mac 10)%Yes%4%Sub-machine guns
+29%353%Mp5%Yes%4%Sub-machine guns
+30%355%Ak47%Yes%5%Assault rifles
+31%356%M4%Yes%5%Assault rifles
+32%372%Tec 9%Yes%4%Sub-machine guns
+33%357%Country rifle%Yes%6%Rifles
+34%358%Sniper rifle%Yes%6%Rifles
+35%359%Rpg%Yes%7%Heavy weapons
+36%360%Heat seeking rocket%Yes%7%Heavy weapons
+37%361%Flame-thrower%Yes%7%Heavy weapons
+38%362%Mini gun%Yes%7%Heavy weapons
+39%363%Satchel charges%Yes%8%Thrown
+40%364%Detonator%Yes%12%Special
+41%365%Spray can%Yes%9%Hand held
+42%366%Fire extinguisher%Yes%9%Hand held
+43%367%Camera%Yes%9%Hand held
+44%368%Night vision%Yes%11%Apparel
+45%369%Thermal goggles%Yes%11%Apparel
+46%370%Parachute%Yes%11%Apparel
+47%-%Fake pistol%-%-%Death reason
+49%-%Vehicle%-%-%Death reason
+50%-%Helicopter blades%-%-%Death reason
+51%-%Explosion%-%-%Death reason
+53%-%Drowned%-%-%Death reason
+54%-%Collision%-%-%Death reason
+200%-%Connect%Yes%-%Connect
+201%-%Disconnect%Yes%-%Disconnect

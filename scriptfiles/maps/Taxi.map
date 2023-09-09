@@ -1,0 +1,5 @@
+new g_Object[1];
+new g_Vehicle[1];
+g_Object[0] = CreateObject(19308, 1426.6280, -1734.4626, 13.3828, 0.0000, 0.0000, 0.0000); //taxi01
+g_Vehicle[0] = CreateVehicle(560, 1426.2436, -1733.9083, 13.1002, 0.1996, 0, 0, -1); //Sultan
+AttachObjectToVehicle(g_Object[0], g_Vehicle[0], 0.0000, -0.2799, 0.9199, 0.0000, 0.0000, 0.0000);

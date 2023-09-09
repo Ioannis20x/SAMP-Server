@@ -1,0 +1,11 @@
+new g_Object[4];
+new g_Vehicle[1];
+g_Object[0] = CreateObject(964, 1125.9311, -1440.9006, 15.3140, 0.0000, 0.0000, 0.0000); //CJ_METAL_CRATE
+g_Object[1] = CreateObject(964, 1086.2614, -1398.0408, 13.8140, 359.9400, 0.0000, 91.1399); //CJ_METAL_CRATE
+g_Object[2] = CreateObject(964, 1083.7038, -1385.3741, 13.7812, 359.9400, 0.0000, 450.7566); //CJ_METAL_CRATE
+g_Object[3] = CreateObject(964, 1086.2147, -1398.0467, 13.8974, 359.9400, 0.0000, 91.1634); //CJ_METAL_CRATE
+g_Vehicle[0] = CreateVehicle(578, 1085.3461, -1397.9934, 14.1750, 94.1492, 0, 0, -1); //DFT-30
+AttachObjectToVehicle(g_Object[0], g_Vehicle[0], 0.0399, 1.4799, -0.2800, 359.9400, 0.0000, 359.9800);
+AttachObjectToVehicle(g_Object[1], g_Vehicle[0], 0.0000, -3.1399, -0.2800, 359.9400, 0.0000, 0.0000);
+AttachObjectToVehicle(g_Object[2], g_Vehicle[0], 0.0000, -0.8600, -0.2800, 359.9400, 0.0000, 0.0000);
+AttachObjectToVehicle(g_Object[3], g_Vehicle[0], 0.0000, -4.9799, -0.2800, 359.9400, 0.0000, 90.0099);

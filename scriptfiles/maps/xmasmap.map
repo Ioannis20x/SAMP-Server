@@ -1,0 +1,16 @@
+new g_Object[3];
+new g_Vehicle[10];
+g_Object[0] = CreateObject(3115, 390.9899, -1942.3499, 6.5000, 0.0000, 0.0000, 0.0000); //CARRIER_LIFT1_SFSE
+g_Object[1] = CreateObject(6933, 391.7999, -2003.5000, -60.0000, 0.0000, 0.0000, 0.0000); //vegasplant08
+g_Object[2] = CreateObject(2226, 1480.4094, -1698.8457, 15.3203, 0.0000, 0.0000, 0.0000); //LOW_HI_FI_3
+g_Vehicle[0] = CreateVehicle(503, 1411.2550, -2330.7727, 13.4717, 0.0601, -1, -1, -1); //Hotring Racer B
+g_Vehicle[1] = CreateVehicle(439, 1411.1832, -2313.7392, 13.3505, 179.5771, -1, -1, -1); //Stallion
+g_Vehicle[2] = CreateVehicle(477, 1404.5852, -2330.7622, 13.3367, 0.2906, -1, -1, -1); //ZR3 50
+g_Vehicle[3] = CreateVehicle(431, 1421.9588, -2339.6245, 13.7035, 358.5344, -1, -1, -1); //Bus
+g_Vehicle[4] = CreateVehicle(411, 220.5417, 9.1058, 2.1784, 256.2598, -1, -1, -1); //Infernus
+g_Vehicle[5] = CreateVehicle(494, 220.4326, 3.2825, 2.1747, 239.3722, -1, -1, -1); //Hotring
+g_Vehicle[6] = CreateVehicle(422, 215.4584, -267.1372, 1.3051, 4.5562, -1, -1, -1); //Bobcat
+g_Vehicle[7] = CreateVehicle(560, 201.9496, -139.9985, 1.1859, 358.9294, -1, -1, -1); //Sultan
+g_Vehicle[8] = CreateVehicle(411, 1327.7199, -1194.5300, 23.4547, 359.0580, -1, -1, -1); //Infernus
+g_Vehicle[9] = CreateVehicle(494, 1483.5344, -1656.9114, -96.2965, 1.8837, -1, -1, -1); //Hotring
+AddVehicleComponent(g_Vehicle[9], 1010);//nto_b_tw

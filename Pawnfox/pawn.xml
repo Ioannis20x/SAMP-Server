@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScintillaNET>
+  <Language Name="pawn">
+    <AutoComplete FillUpCharacters="([" SingleLineAccept="True" IsCaseSensitive="False">
+      <List>
+      </List>
+    </AutoComplete>
+
+    <Indentation TabWidth="4" SmartIndentType="cpp" />
+
+
+    <Lexer LineCommentPrefix="//" StreamCommentPrefix="/* " StreamCommentSuffix=" */" >
+      <Keywords List="0" Inherit="False">
+        for while do stock public forward if else return new break continue false true stock case enum switch sizeof goto default
+      </Keywords>
+      <Keywords List="1" Inherit="False">
+        Float bool
+      </Keywords>
+    </Lexer>
+
+  </Language>
+</ScintillaNET>

@@ -1,0 +1,25 @@
+new g_Object[8];
+new g_Vehicle[1];
+g_Object[0] = CreateObject(1182, 1136.3665, -1452.6457, 15.7967, 0.0000, 0.0000, 0.0000); //fbmp_lr_bl1
+g_Object[1] = CreateObject(19444, 1129.1494, -1443.4837, 15.7968, 0.0000, 0.0000, 0.0000); //wall084
+SetObjectMaterial(g_Object[1], 0, -1, "none", "none", 0xFF000000);
+g_Object[2] = CreateObject(19444, 1129.9669, -1452.4086, 16.0562, 90.0199, 0.0000, 280.7041); //wall084
+SetObjectMaterial(g_Object[2], 0, -1, "none", "none", 0xFF000000);
+g_Object[3] = CreateObject(19444, 1130.3157, -1454.9456, 16.0481, 90.0199, 0.0000, 300.0235); //wall084
+SetObjectMaterial(g_Object[3], 0, -1, "none", "none", 0xFF000000);
+g_Object[4] = CreateObject(19444, 1125.2026, -1453.8536, 16.8881, 90.0199, 0.0000, 316.9173); //wall084
+SetObjectMaterial(g_Object[4], 0, -1, "none", "none", 0xFF000000);
+g_Object[5] = CreateObject(19444, 1126.8950, -1452.1802, 16.0302, 90.0199, 0.0000, 318.8316); //wall084
+SetObjectMaterial(g_Object[5], 0, -1, "none", "none", 0xFF000000);
+g_Object[6] = CreateObject(3031, 1130.8107, -1443.6538, 15.7968, 0.0000, 0.0000, 0.0000); //wong_dish
+g_Object[7] = CreateObject(3031, 1140.8472, -1454.2946, 15.7968, 0.0000, 0.0000, 413.2328); //wong_dish
+g_Vehicle[0] = CreateVehicle(437, 1128.9824, -1449.6029, 15.8444, 356.9922, 0, 6, -1); //Coach
+AddVehicleComponent(g_Vehicle[0], 1010);//nto_b_tw
+AttachObjectToVehicle(g_Object[0], g_Vehicle[0], -0.8798, 5.7399, -0.6200, 0.0000, 0.0000, 0.0000);
+AttachObjectToVehicle(g_Object[1], g_Vehicle[0], -1.2400, 0.0399, 0.1000, 90.0199, 0.0000, 0.0000);
+AttachObjectToVehicle(g_Object[2], g_Vehicle[0], -1.2400, -3.4599, 0.9600, 90.0199, 0.0000, 0.0000);
+AttachObjectToVehicle(g_Object[3], g_Vehicle[0], -1.2400, 2.9200, 0.0999, 90.0199, 0.0000, 0.0000);
+AttachObjectToVehicle(g_Object[4], g_Vehicle[0], 1.2399, -3.4600, 0.9600, 90.0199, 0.0000, 0.0000);
+AttachObjectToVehicle(g_Object[5], g_Vehicle[0], 1.2399, 0.0399, 0.1000, 90.0199, 0.0000, 0.0000);
+AttachObjectToVehicle(g_Object[6], g_Vehicle[0], 0.1000, -2.5199, 3.5399, 0.0000, 0.0000, 56.2799);
+AttachObjectToVehicle(g_Object[7], g_Vehicle[0], -0.2599, -2.1599, 2.7799, 359.7798, 0.0000, 169.5599);

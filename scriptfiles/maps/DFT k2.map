@@ -1,0 +1,7 @@
+new g_Object[2];
+new g_Vehicle[1];
+g_Object[0] = CreateObject(964, 1125.9311, -1440.9006, 15.3140, 0.0000, 0.0000, 0.0000); //CJ_METAL_CRATE
+g_Object[1] = CreateObject(964, 1083.7038, -1385.3741, 13.7812, 359.9400, 0.0000, 450.7566); //CJ_METAL_CRATE
+g_Vehicle[0] = CreateVehicle(578, 1085.4019, -1398.0510, 14.0847, 91.0250, 0, 0, -1); //DFT-30
+AttachObjectToVehicle(g_Object[0], g_Vehicle[0], 0.0399, 1.4799, -0.2800, 359.9400, 0.0000, 359.9800);
+AttachObjectToVehicle(g_Object[1], g_Vehicle[0], 0.0000, -0.8600, -0.2800, 359.9400, 0.0000, 0.0000);

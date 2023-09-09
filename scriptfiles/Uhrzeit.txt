@@ -1,0 +1,17 @@
+// TextDraw developed using Zamaroht's Textdraw Editor 1.0
+
+// On top of script:
+new Text:Uhrzeit;
+
+// In OnGameModeInit prefferably, we procced to create our textdraws:
+Uhrzeit = TextDrawCreate(549.000000, 44.000000, "15:00");
+TextDrawBackgroundColor(Uhrzeit, 255);
+TextDrawFont(Uhrzeit, 0);
+TextDrawLetterSize(Uhrzeit, 0.519999, 1.900000);
+TextDrawColor(Uhrzeit, 16777215);
+TextDrawSetOutline(Uhrzeit, 0);
+TextDrawSetProportional(Uhrzeit, 1);
+TextDrawSetShadow(Uhrzeit, 2);
+
+// You can now use TextDrawShowForPlayer(-ForAll), TextDrawHideForPlayer(-ForAll) and
+// TextDrawDestroy functions to show, hide, and destroy the textdraw.

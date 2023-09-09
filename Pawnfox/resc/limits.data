@@ -1,0 +1,23 @@
+Players%500
+Vehicles%2000
+Vehicle Models%Unlimited
+Objects%1000
+Virtual Worlds%2,147,483,647	
+Map Icons%100
+Race Checkpoints%1
+Checkpoints%1	
+Pickups%4096	
+Global 3D Labels%1024
+Per-player 3D Text Labels%1024
+Chat Bubble String%144 characters
+Gangzones%1024
+Menus%128
+Attached player objects%10
+Gamemodes%16
+Filterscripts%16
+Text I/O%128 cells (512 bytes)
+Name Length (SetPlayerName)%24 characters	
+Textdraw String Length%1024 characters	
+Textdraws Shown In A Single Client's Screen%92
+Textdraws Created Serverwise (Global)%2048
+Textdraws Created Serverwise (Per-Player)%256

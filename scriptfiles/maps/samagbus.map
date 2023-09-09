@@ -1,0 +1,40 @@
+new g_Object[15];
+new g_Vehicle[1];
+g_Object[0] = CreateObject(1182, 1136.3664, -1452.6457, 15.7966, 0.0000, 0.0000, 0.0000); //fbmp_lr_bl1
+g_Object[1] = CreateObject(19444, 1129.1494, -1443.4836, 15.7967, 0.0000, 0.0000, 0.0000); //wall084
+SetObjectMaterial(g_Object[1], 0, -1, "none", "none", 0xFF000000);
+g_Object[2] = CreateObject(19329, 1127.3333, -1454.4210, 16.3985, 0.0198, 0.0000, 553.6096); //7_11_sign04
+SetObjectMaterial(g_Object[2], 0, -1, "none", "none", 0xFF000000);
+g_Object[3] = CreateObject(19444, 1129.9669, -1452.4085, 16.0562, 90.0198, 0.0000, 280.7041); //wall084
+SetObjectMaterial(g_Object[3], 0, -1, "none", "none", 0xFF000000);
+g_Object[4] = CreateObject(19444, 1130.3156, -1454.9455, 16.0480, 90.0198, 0.0000, 300.0234); //wall084
+SetObjectMaterial(g_Object[4], 0, -1, "none", "none", 0xFF000000);
+g_Object[5] = CreateObject(19444, 1125.2026, -1453.8536, 16.8880, 90.0198, 0.0000, 316.9172); //wall084
+SetObjectMaterial(g_Object[5], 0, -1, "none", "none", 0xFF000000);
+g_Object[6] = CreateObject(19444, 1126.8950, -1452.1801, 16.0301, 90.0198, 0.0000, 318.8316); //wall084
+SetObjectMaterial(g_Object[6], 0, -1, "none", "none", 0xFF000000);
+g_Object[7] = CreateObject(3031, 1141.5068, -1453.3382, 15.7967, 0.0000, 0.0000, 0.0000); //wong_dish
+g_Object[8] = CreateObject(19329, 1130.2008, -1449.3797, 16.4715, 0.0198, 0.0000, 628.7059); //7_11_sign04
+SetObjectMaterial(g_Object[8], 0, -1, "none", "none", 0xFF000000);
+g_Object[9] = CreateObject(943, 1141.1745, -1453.3376, 15.7967, 0.0000, 0.0000, 0.0000); //GENERATOR_LOW
+g_Object[10] = CreateObject(3031, 1135.9040, -1451.8984, 15.7967, 0.0000, 0.0000, 319.2452); //wong_dish
+g_Object[11] = CreateObject(3350, 1111.1555, -1457.4605, 15.7967, 0.0000, 0.0000, 0.0000); //torino_mic
+g_Object[12] = CreateObject(3350, 1128.8120, -1453.7211, 16.1311, 0.0000, 0.0000, 362.9132); //torino_mic
+g_Object[13] = CreateObject(3350, 1129.6126, -1462.6218, 15.7202, 335.5799, 359.9999, 372.9028); //torino_mic
+g_Object[14] = CreateObject(3350, 1127.5061, -1459.1325, 15.8009, 324.3999, 359.9999, 363.4548); //torino_mic
+g_Vehicle[0] = CreateVehicle(437, 1128.2030, -1453.7094, 15.9301, 182.5654, 0, 6, -1); //Coach
+AttachObjectToVehicle(g_Object[0], g_Vehicle[0], -0.8798, 5.7399, -0.6200, 0.0000, 0.0000, 0.0000);
+AttachObjectToVehicle(g_Object[1], g_Vehicle[0], -1.2400, 0.0399, 0.1000, 90.0198, 0.0000, 0.0000);
+AttachObjectToVehicle(g_Object[2], g_Vehicle[0], 1.2999, 3.6398, 0.4600, 0.0198, 0.0000, 270.0198);
+AttachObjectToVehicle(g_Object[3], g_Vehicle[0], -1.2400, -3.4598, 0.9599, 90.0198, 0.0000, 0.0000);
+AttachObjectToVehicle(g_Object[4], g_Vehicle[0], -1.2400, 2.9200, 0.0998, 90.0198, 0.0000, 0.0000);
+AttachObjectToVehicle(g_Object[5], g_Vehicle[0], 1.2398, -3.4600, 0.9599, 90.0198, 0.0000, 0.0000);
+AttachObjectToVehicle(g_Object[6], g_Vehicle[0], 1.2398, 0.0399, 0.1000, 90.0198, 0.0000, 0.0000);
+AttachObjectToVehicle(g_Object[7], g_Vehicle[0], 0.5600, -3.2198, 2.6998, 0.0000, 0.0000, 27.7199);
+AttachObjectToVehicle(g_Object[8], g_Vehicle[0], 1.2999, 2.2198, 0.4600, 0.0198, 0.0000, 270.0198);
+AttachObjectToVehicle(g_Object[9], g_Vehicle[0], 0.0000, -2.6598, 1.7799, 0.0000, 0.0000, 0.0000);
+AttachObjectToVehicle(g_Object[10], g_Vehicle[0], -0.1199, -3.2599, 3.1198, 0.0000, 0.0000, 145.2200);
+AttachObjectToVehicle(g_Object[11], g_Vehicle[0], -0.5598, -3.6398, 0.3199, 0.0000, 0.0000, 179.9998);
+AttachObjectToVehicle(g_Object[12], g_Vehicle[0], -0.9199, 5.2800, -0.1800, 335.5799, 359.9999, 190.3398);
+AttachObjectToVehicle(g_Object[13], g_Vehicle[0], 0.9400, 1.7001, -0.0200, 324.3999, 359.9999, 180.6998);
+AttachObjectToVehicle(g_Object[14], g_Vehicle[0], -0.9198, 1.7001, -0.0200, 324.3999, 359.9999, 180.6998);

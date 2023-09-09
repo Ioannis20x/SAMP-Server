@@ -1,0 +1,175 @@
+new g_Object[150];
+new g_Vehicle[9];
+g_Object[0] = CreateObject(3115, 390.9899, -1942.3499, 6.5000, 0.0000, 0.0000, 0.0000); //CARRIER_LIFT1_SFSE
+g_Object[1] = CreateObject(6933, 391.7999, -2003.5000, -60.0000, 0.0000, 0.0000, 0.0000); //vegasplant08
+g_Object[2] = CreateObject(1215, 371.1679, -2038.3000, 7.2399, 0.0000, 0.0000, 0.0000); //bollardlight
+g_Object[3] = CreateObject(1215, 369.8236, -2038.3000, 7.2399, 0.0000, 0.0000, 0.0000); //bollardlight
+g_Object[4] = CreateObject(1215, 368.3611, -2038.3000, 7.2399, 0.0000, 0.0000, 0.0000); //bollardlight
+g_Object[5] = CreateObject(19529, 1470.1369, -1655.0275, 12.3291, 0.0000, 0.0000, 0.0000); //Plane125x125Grass1
+g_Object[6] = CreateObject(5708, 1934.9249, 716.1473, 20.1494, 0.0000, 0.0000, 180.0000); //hospital_law
+g_Object[7] = CreateObject(8645, 1877.6641, 683.9545, 10.4913, 0.0000, 0.0000, 90.0000); //shbbyhswall01_lvs
+g_Object[8] = CreateObject(8645, 1877.6641, 658.2167, 10.4913, 0.0000, 0.0000, 270.0000); //shbbyhswall01_lvs
+g_Object[9] = CreateObject(8645, 1877.3428, 723.0050, 10.4913, 0.0000, 0.0000, 270.0000); //shbbyhswall01_lvs
+g_Object[10] = CreateObject(8645, 1877.3228, 748.2567, 10.4913, 0.0000, 0.0000, 90.0000); //shbbyhswall01_lvs
+g_Object[11] = CreateObject(9131, 1882.9810, 762.7658, 10.1314, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+g_Object[12] = CreateObject(6283, 379.0625, -2070.7033, 11.9568, 359.6983, 0.0000, 0.0000); //pier04b_LAw2
+g_Object[13] = CreateObject(19368, 358.2720, -2039.8549, 6.7434, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[14] = CreateObject(19368, 358.2720, -2043.0550, 6.7434, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[15] = CreateObject(19368, 358.2720, -2046.2551, 6.7434, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[16] = CreateObject(19368, 358.2720, -2039.8549, 6.5833, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[17] = CreateObject(19368, 358.2720, -2043.0550, 6.5833, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[18] = CreateObject(19368, 358.2720, -2046.2550, 6.4233, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[19] = CreateObject(19368, 358.2720, -2046.2551, 6.5833, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[20] = CreateObject(2395, 357.3533, -2038.7325, 6.8800, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[21] = CreateObject(2395, 357.3533, -2042.4525, 6.8800, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[22] = CreateObject(2395, 357.3533, -2046.1724, 6.8800, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[23] = CreateObject(19368, 354.7720, -2046.2550, 6.4233, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[24] = CreateObject(19368, 350.8919, -2046.2551, 6.5233, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[25] = CreateObject(19368, 353.9920, -2046.2551, 6.7434, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[26] = CreateObject(19368, 354.7720, -2043.0551, 6.4233, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[27] = CreateObject(19368, 350.8919, -2043.0550, 6.5833, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[28] = CreateObject(19368, 353.9719, -2043.0550, 6.7434, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[29] = CreateObject(19368, 350.8919, -2039.8549, 6.5833, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[30] = CreateObject(19368, 353.9719, -2039.8549, 6.7434, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[31] = CreateObject(2395, 354.6133, -2038.7325, 6.8800, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[32] = CreateObject(2395, 354.6133, -2042.4525, 6.8800, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[33] = CreateObject(2395, 354.6133, -2046.1724, 6.8800, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[34] = CreateObject(19368, 350.8919, -2046.2550, 6.4233, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[35] = CreateObject(19368, 350.8919, -2043.0551, 6.4233, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[36] = CreateObject(19368, 350.8919, -2039.8549, 6.4233, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[37] = CreateObject(2395, 351.8732, -2046.1724, 6.8800, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[38] = CreateObject(2395, 351.8732, -2042.4525, 6.8800, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[39] = CreateObject(2395, 351.8732, -2038.7325, 6.8800, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[40] = CreateObject(19368, 350.8919, -2039.8549, 6.7434, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[41] = CreateObject(19368, 350.8919, -2043.0550, 6.7434, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[42] = CreateObject(19368, 350.8919, -2046.2551, 6.7234, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[43] = CreateObject(2395, 349.1333, -2046.1724, 6.8800, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[44] = CreateObject(2395, 349.1333, -2042.4525, 6.8800, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[45] = CreateObject(2395, 349.1333, -2038.7325, 6.8800, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[46] = CreateObject(970, 360.3783, -2014.3270, 7.3800, 0.0000, 0.0000, 90.0000); //fencesmallb
+g_Object[47] = CreateObject(970, 349.1984, -2045.0000, 7.3800, 0.0000, 0.0000, 90.0000); //fencesmallb
+g_Object[48] = CreateObject(970, 349.1984, -2040.3399, 7.3800, 0.0000, 0.0000, 90.0000); //fencesmallb
+g_Object[49] = CreateObject(2395, 349.1333, -2038.7325, 6.8200, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[50] = CreateObject(2395, 349.1333, -2038.7325, 6.7600, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[51] = CreateObject(2395, 349.1333, -2038.7325, 6.6999, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[52] = CreateObject(2395, 349.1333, -2038.7325, 6.6399, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[53] = CreateObject(2395, 349.1333, -2038.7325, 6.5799, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[54] = CreateObject(2395, 349.1333, -2038.7325, 6.5199, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[55] = CreateObject(2395, 349.1333, -2038.7325, 6.4600, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[56] = CreateObject(2395, 351.8732, -2038.7325, 6.8200, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[57] = CreateObject(2395, 351.8732, -2038.7325, 6.7600, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[58] = CreateObject(2395, 351.8732, -2038.7325, 6.6999, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[59] = CreateObject(2395, 351.8732, -2038.7325, 6.5799, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[60] = CreateObject(2395, 351.8732, -2038.7325, 6.5199, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[61] = CreateObject(2395, 351.8732, -2038.7325, 6.4600, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[62] = CreateObject(2395, 351.8732, -2038.7325, 6.6399, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[63] = CreateObject(19815, 349.1012, -2042.7489, 6.3228, 0.0000, 0.0000, 90.0000); //ToolBoard1
+g_Object[64] = CreateObject(19815, 349.1012, -2039.7489, 6.3228, 0.0000, 0.0000, 90.0000); //ToolBoard1
+g_Object[65] = CreateObject(19815, 350.6163, -2047.2427, 6.3228, 0.0000, 0.0000, 180.0000); //ToolBoard1
+g_Object[66] = CreateObject(19368, 350.8919, -2039.8549, 6.2434, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[67] = CreateObject(19368, 350.8919, -2039.8549, 6.0633, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[68] = CreateObject(19368, 350.8919, -2039.8549, 5.9233, -0.0399, 90.0000, 0.0000); //wall016
+g_Object[69] = CreateObject(19121, 349.2712, -2042.6859, 7.4119, 0.0000, 0.0000, 0.0000); //BollardLight1
+g_Object[70] = CreateObject(2395, 349.1333, -2038.7325, 6.4000, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[71] = CreateObject(2395, 351.8732, -2038.7325, 6.4000, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[72] = CreateObject(2395, 349.1333, -2038.7325, 6.3400, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[73] = CreateObject(2395, 351.8732, -2038.7325, 6.3400, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[74] = CreateObject(2395, 349.1333, -2038.7325, 6.2800, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[75] = CreateObject(2395, 349.1333, -2038.7325, 6.2199, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[76] = CreateObject(2395, 349.1333, -2038.7325, 6.1599, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[77] = CreateObject(2395, 349.1333, -2038.7325, 6.0999, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[78] = CreateObject(2395, 349.1333, -2038.7325, 6.0399, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[79] = CreateObject(2395, 349.1333, -2038.7325, 5.9800, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[80] = CreateObject(2395, 349.1333, -2038.7325, 5.9400, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[81] = CreateObject(2395, 351.8732, -2038.7325, 6.2800, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[82] = CreateObject(2395, 351.8732, -2038.7325, 6.2199, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[83] = CreateObject(2395, 351.8732, -2038.7325, 6.1599, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[84] = CreateObject(2395, 351.8732, -2038.7325, 6.0999, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[85] = CreateObject(2395, 351.8932, -2038.7333, 6.0399, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[86] = CreateObject(2395, 351.8732, -2038.7325, 5.9800, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[87] = CreateObject(2395, 351.8732, -2038.7325, 5.9400, -90.0000, 90.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[88] = CreateObject(2395, 351.7312, -2044.4718, 5.7901, 90.0000, 0.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[89] = CreateObject(2395, 349.6112, -2044.4718, 5.7901, 90.0000, 0.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[90] = CreateObject(2395, 355.4612, -2044.4890, 5.7901, 90.0000, 0.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[91] = CreateObject(2395, 359.1911, -2044.4890, 5.7901, 90.0000, 0.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[92] = CreateObject(2395, 349.6112, -2041.7518, 5.7901, 90.0000, 0.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[93] = CreateObject(2395, 351.7511, -2041.7521, 5.7901, 90.0000, 0.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[94] = CreateObject(2395, 355.4612, -2041.7490, 5.7901, 90.0000, 0.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[95] = CreateObject(2395, 349.6112, -2039.0318, 5.7701, 90.0000, 0.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[96] = CreateObject(2395, 351.7511, -2039.0322, 5.7701, 90.0000, 0.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[97] = CreateObject(2395, 355.4612, -2039.0290, 5.7701, 90.0000, 0.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[98] = CreateObject(2395, 359.1911, -2041.7490, 5.7901, 90.0000, 0.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[99] = CreateObject(2395, 359.1911, -2039.0290, 5.7701, 90.0000, 0.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[100] = CreateObject(19815, 349.1000, -2045.7218, 6.3228, 0.0000, 0.0000, 90.0000); //ToolBoard1
+g_Object[101] = CreateObject(2395, 349.6112, -2038.2319, 5.7701, 90.0000, 0.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[102] = CreateObject(2395, 351.7511, -2038.2521, 5.7701, 90.0000, 0.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[103] = CreateObject(2395, 355.4612, -2038.2491, 5.7701, 90.0000, 0.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[104] = CreateObject(2395, 359.2167, -2038.2633, 5.7701, 90.0000, 0.0000, 0.0000); //CJ_SPORTS_WALL
+g_Object[105] = CreateObject(19815, 356.0963, -2038.2712, 6.3228, 0.0000, 0.0000, 0.0000); //ToolBoard1
+g_Object[106] = CreateObject(19815, 359.0762, -2038.2712, 6.3228, 0.0000, 0.0000, 0.0000); //ToolBoard1
+g_Object[107] = CreateObject(19815, 353.5963, -2047.2828, 6.3228, 0.0000, 0.0000, 180.0000); //ToolBoard1
+g_Object[108] = CreateObject(19815, 356.5817, -2047.2707, 6.3228, 0.0000, 0.0000, 180.0000); //ToolBoard1
+g_Object[109] = CreateObject(19815, 359.5817, -2047.2697, 6.3228, 0.0000, 0.0000, 180.0000); //ToolBoard1
+g_Object[110] = CreateObject(1269, 349.5440, -2038.5307, 7.6265, 0.0000, 0.0000, -90.0000); //parkingmeter
+g_Object[111] = CreateObject(1269, 349.5440, -2046.6507, 7.6265, 0.0000, 0.0000, -90.0000); //parkingmeter
+g_Object[112] = CreateObject(1246, 321.7964, -1902.1467, 46.4338, 0.0000, 0.0000, 0.0000); //line
+g_Object[113] = CreateObject(970, 360.3783, -2018.4470, 7.3800, 0.0000, 0.0000, 90.0000); //fencesmallb
+g_Object[114] = CreateObject(970, 360.3783, -2022.5870, 7.3800, 0.0000, 0.0000, 90.0000); //fencesmallb
+g_Object[115] = CreateObject(3862, 354.5307, -2026.9216, 8.0221, 0.0000, 0.0000, 55.8803); //marketstall02_SFXRF
+g_Object[116] = CreateObject(970, 358.3183, -2024.6269, 7.3800, 0.0000, 0.0000, 0.0000); //fencesmallb
+g_Object[117] = CreateObject(970, 354.4584, -2024.6469, 7.3800, 0.0000, 0.0000, 0.0000); //fencesmallb
+g_Object[118] = CreateObject(970, 352.3984, -2026.6870, 7.3800, 0.0000, 0.0000, 90.0000); //fencesmallb
+g_Object[119] = CreateObject(970, 352.3984, -2030.7669, 7.3800, 0.0000, 0.0000, 90.0000); //fencesmallb
+g_Object[120] = CreateObject(970, 352.3984, -2034.8869, 7.3800, 0.0000, 0.0000, 90.0000); //fencesmallb
+g_Object[121] = CreateObject(970, 351.2984, -2038.3000, 7.3800, 0.0000, 0.0000, 0.0000); //fencesmallb
+g_Object[122] = CreateObject(970, 352.3984, -2036.1669, 7.3800, 0.0000, 0.0000, 90.0000); //fencesmallb
+g_Object[123] = CreateObject(970, 355.3584, -2038.3000, 7.3800, 0.0000, 0.0000, 0.0000); //fencesmallb
+g_Object[124] = CreateObject(970, 357.7585, -2038.3000, 7.3800, 0.0000, 0.0000, 0.0000); //fencesmallb
+g_Object[125] = CreateObject(970, 351.2585, -2047.0200, 7.3800, 0.0000, 0.0000, 0.0000); //fencesmallb
+g_Object[126] = CreateObject(970, 355.3584, -2047.0200, 7.3800, 0.0000, 0.0000, 0.0000); //fencesmallb
+g_Object[127] = CreateObject(970, 357.7785, -2047.0200, 7.3800, 0.0000, 0.0000, 0.0000); //fencesmallb
+g_Object[128] = CreateObject(970, 364.8309, -2038.3000, 7.3800, 0.0000, 0.0000, 0.0000); //fencesmallb
+g_Object[129] = CreateObject(970, 374.5184, -2038.3000, 7.3800, 0.0000, 0.0000, 0.0000); //fencesmallb
+g_Object[130] = CreateObject(1215, 361.3410, -2038.3000, 7.3800, 0.0000, 0.0000, 0.0000); //bollardlight
+g_Object[131] = CreateObject(1215, 378.3080, -2038.3000, 7.3800, 0.0000, 0.0000, 0.0000); //bollardlight
+g_Object[132] = CreateObject(19550, -7576.9204, 5054.3320, -4694.8906, 0.0000, 0.0000, 0.0000); //Plane125x125Grass2
+g_Object[133] = CreateObject(19550, 1489.6024, -16606938.0000, 12.3434, 0.0000, 0.0000, 0.0000); //Plane125x125Grass2
+g_Object[134] = CreateObject(19529, 1470.1369, -1665.0275, 12.3092, 0.0000, 0.0000, 0.0000); //Plane125x125Grass1
+g_Object[135] = CreateObject(3573, 1803.3083, -2058.3940, 14.9843, 0.0000, 0.0000, 180.0000); //lasdkrtgrp1
+g_Object[136] = CreateObject(1497, 1767.8533, -2019.4367, 13.1166, 0.0000, 0.0000, 0.0000); //Gen_doorEXT02
+g_Object[137] = CreateObject(1497, 1764.3020, -2032.7329, 13.1166, 0.0000, 0.0000, 90.0000); //Gen_doorEXT02
+g_Object[138] = CreateObject(1497, 1764.3333, -2049.7968, 13.1166, 0.0000, 0.0000, 90.0000); //Gen_doorEXT02
+g_Object[139] = CreateObject(19370, 1899.2531, 696.6364, 12.2054, 0.4000, -90.2999, 0.1999); //wall018
+g_Object[140] = CreateObject(19370, 1899.2630, 693.5164, 12.1936, 0.4000, -90.2999, 0.1999); //wall018
+g_Object[141] = CreateObject(19370, 1899.2739, 690.2969, 12.1611, 0.4000, -90.2999, 0.1999); //wall018
+g_Object[142] = CreateObject(19370, 1899.2847, 687.2564, 12.1999, 0.4000, -90.2999, 0.1999); //wall018
+g_Object[143] = CreateObject(19370, 1899.2957, 684.0469, 12.1175, 0.4000, -90.2999, 0.1999); //wall018
+g_Object[144] = CreateObject(19370, 1902.7161, 684.0588, 12.1354, 0.4000, -90.2999, 0.1999); //wall018
+g_Object[145] = CreateObject(19370, 1902.6761, 687.2686, 12.1576, 0.4000, -90.2999, 0.1999); //wall018
+g_Object[146] = CreateObject(19370, 1899.2410, 699.8365, 12.2277, 0.4000, -90.2999, 0.1999); //wall018
+g_Object[147] = CreateObject(19370, 1899.2301, 703.0065, 12.2498, 0.4000, -90.2999, 0.1999); //wall018
+g_Object[148] = CreateObject(19370, 1899.2191, 706.1069, 12.2715, 0.4000, -90.2999, 0.1999); //wall018
+g_Object[149] = CreateObject(19370, 1899.2083, 709.3266, 12.2940, 0.4000, -90.2999, 0.1999); //wall018
+g_Vehicle[0] = CreateVehicle(503, 1411.2550, -2330.7727, 13.4717, 0.0601, -1, -1, -1); //Hotring Racer B
+g_Vehicle[1] = CreateVehicle(439, 1411.1832, -2313.7392, 13.3505, 179.5771, -1, -1, -1); //Stallion
+g_Vehicle[2] = CreateVehicle(477, 1404.5852, -2330.7622, 13.3367, 0.2906, -1, -1, -1); //ZR3 50
+g_Vehicle[3] = CreateVehicle(431, 1421.9588, -2339.6245, 13.7035, 358.5344, -1, -1, -1); //Bus
+g_Vehicle[4] = CreateVehicle(411, 220.5417, 9.1058, 2.1784, 256.2598, -1, -1, -1); //Infernus
+g_Vehicle[5] = CreateVehicle(494, 220.4326, 3.2825, 2.1747, 239.3722, -1, -1, -1); //Hotring
+g_Vehicle[6] = CreateVehicle(422, 215.4584, -267.1372, 1.3051, 4.5562, -1, -1, -1); //Bobcat
+g_Vehicle[7] = CreateVehicle(560, 201.9496, -139.9985, 1.1859, 358.9294, -1, -1, -1); //Sultan
+g_Vehicle[8] = CreateVehicle(411, 1082.5899, -1768.9000, 13.0635, 355.2990, 0, 0, -1); //
+ChangeVehiclePaintjob(g_Vehicle[8], 0);
+ChangeVehiclePaintjob(g_Vehicle[8], 0);
+ChangeVehiclePaintjob(g_Vehicle[8], 0);
+ChangeVehiclePaintjob(g_Vehicle[8], 0);
+ChangeVehiclePaintjob(g_Vehicle[8], 0);
+ChangeVehiclePaintjob(g_Vehicle[8], 0);
+ChangeVehiclePaintjob(g_Vehicle[8], 0);
+ChangeVehiclePaintjob(g_Vehicle[8], 0);
+ChangeVehiclePaintjob(g_Vehicle[8], 0);
+ChangeVehiclePaintjob(g_Vehicle[8], 0);
+ChangeVehiclePaintjob(g_Vehicle[8], 0);
+ChangeVehiclePaintjob(g_Vehicle[8], 0);
+ChangeVehiclePaintjob(g_Vehicle[8], 0);
+ChangeVehiclePaintjob(g_Vehicle[8], 0);

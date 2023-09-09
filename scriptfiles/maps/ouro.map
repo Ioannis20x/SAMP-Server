@@ -1,0 +1,14 @@
+new g_Object[1];
+new g_Vehicle[1];
+g_Object[0] = CreateObject(951, 1126.3306, 460.89999, 460.89999, 0.0000, 0.0000, 160.0000); //CJ_VIEW_TELE2
+g_Object[1] = CreateObject(3031, -1971.2998, 456.79999, 38, 0.0000, 340, 30); //wong_dish
+g_Object[2] = CreateObject(1363, -1970.22, 456, -1970.22, 0.0000, 0.0000, 0.0000); //CJ_VIEW_TELE2^
+g_Object[3] = CreateObject(2596, -1970.1, 458, 35.9, 0.0000, 0.0000, 90.0000); //CJ_VIEW_TELE2
+g_Object[4] = CreateObject(2662, -1971.34, 458, 35.9, 36.5, 0.0000, 90.0000); //CJ_VIEW_TELE2
+g_Vehicle[0] = CreateVehicle(437, -1971.2998, -457.5, 35.4, 0.0, 6, 6, -1); //Bus
+AddVehicleComponent(g_Vehicle[0], 1010);//nto_b_tw
+AttachObjectToVehicle(g_Object[0], g_Vehicle[0], 0.0, 0.0000, 4.0, 0.0000, 0.0000, 0.0);
+AttachObjectToVehicle(g_Object[0], g_Vehicle[1], 0.0, 0.0000, 0.0, 0.0000, 0.0000, 0.0);
+AttachObjectToVehicle(g_Object[0], g_Vehicle[2], 0.0, 0.0000, 0.0, 0.0000, 0.0000, 0.0);
+AttachObjectToVehicle(g_Object[0], g_Vehicle[3], 0.0, 0.0000, 0.0, 0.0000, 0.0000, 0.0);
+AttachObjectToVehicle(g_Object[0], g_Vehicle[4], 0.0, 0.0000, 0.0, 0.0000, 0.0000, 0.0);

@@ -1,0 +1,79 @@
+Weather%
+0-7%Blue skies
+08%Stormy
+09%Cloudy and foggy
+10%Clear blue sky
+11%Heatwave
+12-15%Dull, colourless
+16%Dull, cloudy ,rainy
+17-18%Heatwave
+19%Sandstorm
+20%Foggy, Greenish
+21%Very dark, gradiented skyline, purple
+22%Very dark, gradiented skyline, purple
+23-26%Pale orange
+27-29%Fresh blue
+30-32%Dark, cloudy, teal
+33%Dark, cloudy, brown
+34%Blue/purple, regular
+35%Dull brown
+36-38%Bright, foggy, orange
+39%Very bright
+40-42%Blue/purple cloudy
+43%Toxic clouds
+44%Black/white sky
+51-53%Amazing draw distance
+700%Stormy weather with pink sky and crystal water
+150%Darkest weather ever
+Explosions%
+0%Small normal
+1%Medium
+2%Small normal
+3%Small normal
+4%Chemical 1
+5%Chemical 2
+6%Large
+7%Large
+8%Invisible
+9%Invisible
+10%Large
+11%Small normal
+12%RC tiger gun
+13%Invisible
+PlayerStates%
+0%Empty (while initializing) - "PLAYER_STATE_NONE"
+1%Player is on foot - "PLAYER_STATE_ONFOOT"
+2%Player is driver of a vehicle - "PLAYER_STATE_DRIVER"
+3%Player is passenger of a vehicle - "PLAYER_STATE_PASSENGER"
+7%Player is wasted or on class selection - "PLAYER_STATE_WASTED"
+8%Player is spawned - "PLAYER_STATE_SPAWNED"
+9%Player is spectating - "PLAYER_STATE_SPECTATING"
+WeaponStates%
+-1%WEAPONSTATE_UNKNOWN
+0%WEAPONSTATE_NO_BULLETS
+1%WEAPONSTATE_LAST_BULLET
+2%WEAPONSTATE_MORE_BULLETS
+3%WEAPONSTATE_RELOADING
+MarkerMode%
+0%PLAYER_MARKERS_MODE_OFF
+1%PLAYER_MARKERS_MODE_GLOBAL
+2%PLAYER_MARKERS_MODE_STREAMED
+FightingStyles%
+4%FIGHT_STYLE_NORMAL
+5%FIGHT_STYLE_BOXING
+6%FIGHT_STYLE_KUNGFU
+7%FIGHT_STYLE_KNEEHEAD
+15%FIGHT_STYLE_GRABKICK
+16%FIGHT_STYLE_ELBOW
+WeaponSkills%
+0%WEAPONSKILL_PISTOL
+1%WEAPONSKILL_PISTOL_SILENCED
+2%WEAPONSKILL_DESERT_EAGLE
+3%WEAPONSKILL_SHOTGUN
+4%WEAPONSKILL_SAWNOFF_SHOTGUN
+5%WEAPONSKILL_SPAS12_SHOTGUN
+6%WEAPONSKILL_MICRO_UZI
+7%WEAPONSKILL_MP5
+8%WEAPONSKILL_AK47
+9%WEAPONSKILL_M4
+10%WEAPONSKILL_SNIPERRIFLE

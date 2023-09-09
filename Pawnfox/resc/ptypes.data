@@ -1,0 +1,14 @@
+0%The pickup does not display.
+1%Not pickupable, exists all the time. (Suitable for completely scripted pickups using OnPlayerPickUpPickup)
+2%Pickupable, respawns after some time.
+3%Pickupable, respawns after death
+4%Disappears shortly after created (perhaps for weapon drops?)
+5%Disappears shortly after created (perhaps for weapon drops?)
+8%Pickupable, but has no effect. Disappears automatically.
+11%Blows up a few seconds after being created (bombs?)
+12%Blows up a few seconds after being created.
+13%Slowly decends to the ground.
+14%Pickupable, but only when in a vehicle.
+15%Pickupable, respawns after death
+19%Pickupable, but has no effect (information icons?)
+22%Pickupable, respawns after death.
