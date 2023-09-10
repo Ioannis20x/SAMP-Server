@@ -8,6 +8,7 @@
 #include <a_mysql>
 #include <zCMD>
 #include <sscanf2>
+//#include <color>
 
 /*Fraktionen
 0: Zivilisten
@@ -723,7 +724,7 @@ return 0;
 
 public OnGameModeInit()
 {
-mysql_log(ALL);
+mysql_log(DEBUG);
  #if defined SERVERPAS
  SendRconCommand("password  Ioannis");
  #endif
@@ -997,7 +998,7 @@ public sekunde()
 {
 	new posttimer=0;
 	posttimer++;
-	if( posttimer == 3600){
+	if(posttimer == 3600){
 	SendClientMessageToAll(COLOR_WHITE,"[============ SERVERINFO ============]");
 	SendClientMessageToAll(COLOR_BLUE,"Ab sofort existiert ein Discord für diesen Server.");
 	SendClientMessageToAll(COLOR_BLUE,"In diesem werden Changelogs gepostet, Fragen beantwortet und Vorschläge entgegen genommen.");
@@ -1288,12 +1289,14 @@ SetPlayerColor(playerid, COLOR_WHITE);
 for(new i=0; i<sizeof(cInfo); i++)
 	{
 	    if(cInfo[i][id_x]==0)continue;
-	    if(strcmp(cInfo[i][besitzer],getPlayerName(playerid))==1)continue;
+	    if(cInfo[i][besitzer] == sInfo[playerid][db_id])continue;
 	    GetVehiclePos(cInfo[i][id_x],cInfo[i][c_x],cInfo[i][c_y],cInfo[i][c_z]);
-	    GetVehicleZAngle(cInfo[i][id_x],cInfo[i][c_r]);
 	    new query[128];
-	    mysql_format(dbhandle,query,sizeof(query),"UPDATE autos SET tank='%i',f1='%i',f2='%i', x='%f', y='%f', z='%f' WHERE id='%i'",tank[i],cInfo[i][farbe1],cInfo[i][farbe2],cInfo[i][c_x],cInfo[i][c_y],cInfo[i][c_z], cInfo[i][db_id]);
-	    mysql_tquery(dbhandle,query);
+		new debugmsg[64];
+		format(debugmsg,sizeof(debugmsg),"%i | %i",cInfo[i][farbe1],cInfo[i][farbe2]);
+	    mysql_format(dbhandle,query,sizeof(query),"UPDATE autos SET f1='%i', f2='%i', x='%f', y='%f', z='%f' WHERE id='%i'",cInfo[i][farbe1],cInfo[i][farbe2],cInfo[i][c_x],cInfo[i][c_y],cInfo[i][c_z], cInfo[i][db_id]);
+	    print(debugmsg);
+		mysql_tquery(dbhandle,query);
 	    DestroyVehicle(cInfo[i][id_x]);
 	    cInfo[i][id_x]=0;
 	}
@@ -2637,9 +2640,13 @@ CMD:vcolor(playerid,params[])
 {
 new vID,c1,c2;
 if(sscanf(params,"iii",vID,c1,c2))return SendClientMessage(playerid,COLOR_GREY,"INFO: /vcolor [vID] [c1] [C2]");
-ChangeVehicleColor(vID, c1, c2);
-cInfo[vID][farbe1] = c1;
-cInfo[vID][farbe2] = c2;
+for(new i; i<sizeof(cInfo); i++)
+{
+    if(cInfo[i][id_x] != vID) continue;
+    cInfo[i][farbe1] = c1;
+    cInfo[i][farbe2] = c2;
+    break;
+}
 return 1;
 }
 
@@ -3443,7 +3450,7 @@ if(!strcmp(option,"park",false))
 {
 new string[128];
 for(new i=0; i<GetVehiclePoolSize();i++){
-if(IsPlayerInVehicle(playerid,i) && strcmp(cInfo[i][besitzer],getPlayerName(playerid),false)){
+if(IsPlayerInVehicle(playerid,i) && cInfo[i][besitzer] == sInfo[playerid][db_id]){
 GetPlayerPos(playerid,x,y,z);
 GetPlayerFacingAngle(playerid,r);
 format(string,sizeof(string), "%f %f %f",cInfo[i][c_x],cInfo[i][c_y],cInfo[i][c_z]);
@@ -5667,13 +5674,13 @@ public OnPlayerCarsLoad(playerid)
 	{
 new id=getFreeCarID();
 cache_get_value_name_int(i,"model",cInfo[id][model]);
-cache_get_value_name(i,"besitzer",cInfo[id][besitzer],128);
+cache_get_value_name_int(i,"besitzer",cInfo[id][besitzer]);
 cache_get_value_name_float(i,"x",cInfo[id][c_x]);
 cache_get_value_name_float(i,"y",cInfo[id][c_y]);
 cache_get_value_name_float(i,"z",cInfo[id][c_z]);
 cache_get_value_name_float(i,"r",cInfo[id][c_r]);
 cache_get_value_name_int(i,"id",cInfo[id][db_id]);
-cache_get_value_name_int(i,"f1+",cInfo[id][farbe1]);
+cache_get_value_name_int(i,"f1",cInfo[id][farbe1]);
 cache_get_value_name_int(i,"f2",cInfo[id][farbe2]);
 cache_get_value_name_float(i,"dl",cInfo[id][dl]);
 cache_get_value_name(i,"Kennzeichen",cInfo[id][kennzeichen],128);
