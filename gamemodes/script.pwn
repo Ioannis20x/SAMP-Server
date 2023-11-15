@@ -3494,18 +3494,47 @@ CMD:car(playerid,params[])
 		iObjective;
 
 //LOCK
-	if(strcmp(option,"lock",false)==0)
-	{
-	SCM(playerid,COLOR_RED,"SNENS");
-	new Float:vx,Float:vy,Float:vz;
-	new string[64];
-	for(new i=0;i<=GetVehiclePoolSize();i++)
-	{
-		format(string,sizeof(string),"%i",i);
-		SendClientMessageToAll(COLOR_GREY,string);   	
-	}
-	return 1;
+if (strcmp(option, "lock", false) == 0)
+{
+    new Float:vx, Float:vy, Float:vz;
+    new string[64];
+    for (new i = 0; i <= GetVehiclePoolSize(); i++)
+    {
+        if (i != 34)
+            continue;
+
+        if (!IsValidVehicle(i))
+        {
+            printf("Ungültige Fahrzeug-ID: %d", i);
+            return SEM(playerid, "Ungültige Fahrzeug-ID!");
+        }
+
+        GetVehiclePos(i, vx, vy, vz);
+        printf("Fahrzeug %d - Position: %.2f, %.2f, %.2f", i, vx, vy, vz);
+
+        new Float:distance = GetPlayerDistanceFromPoint(playerid, vx, vy, vz);
+        printf("Distanz zur Position: %.2f", distance);
+
+        if (!IsPlayerInRangeOfPoint(playerid, 10.0, vx, vy, vz))
+        {
+            printf("Spieler nicht in der Nähe des Fahrzeugs! Distanz: %.2f", distance);
+            return SEM(playerid, "Du bist nicht in der Nähe eines Fahrzeuges!");
+        }
+
+        if (!(cInfo[i][besitzer] == sInfo[playerid][db_id]))
+        {
+            printf("Falscher Besitzer!");
+            return SEM(playerid, "Du bist nicht in der Nähe deiner Fahrzeuge!");
+        }
+
+        // Rest des Codes...
+    }
+    printf("Kein gültiges Fahrzeug gefunden!");
+    return 1;
 }
+
+
+
 
 	if(strcmp(option,"park",false)==0)
 	{
@@ -3547,7 +3576,7 @@ name = getPlayerName(playerid);
 SendClientMessage(playerid,COLOR_HBLUE,"[______________Hausübersicht______________]");
 for(new i=0;i<=sizeof(hInfo);i++){
 
-	if(strcmp(hInfo[i][h_besitzer], getPlayerName(playerid), false)){
+	if(strcmp(hInfo[i][h_besitzer], getPlayerName(playerid), false)==0){
 	format(string,sizeof(string),"HAUS: {FFFFFF}Hausnummer: %i | Status: Eigentum",i);
 	SendClientMessage(playerid,COLOR_HBLUE,string);
 		}
