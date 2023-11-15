@@ -87,7 +87,6 @@
 #define SERVEROWNER Ioannis
 
 
-
 //Dialoge
 #define ADMIN_NETSTATS_DIALOGID 12898
 #define DIALOG_TP 1
@@ -110,7 +109,7 @@
 //MySQL
 #define DB_HOST "127.0.0.1"
 #define DB_USER "samp"
-#define DB_PASS "Kokoras_12!!"
+#define DB_PASS "password"
 #define DB_DB "samp"
 
 //Limits
@@ -142,7 +141,9 @@ enum playerInfo{
  	pOL,
  	tazer,
 	smoney,
-	wanteds
+	wanteds,
+	login[128],
+	logout[128]
 }
 
 enum hausEnum{
@@ -153,7 +154,7 @@ enum hausEnum{
 	Float:ih_y,
 	Float:ih_z,
 	h_interior,
-	h_besitzer[MAX_PLAYER_NAME],
+	h_besitzer[128],
 	h_preis,
 	h_level,
 	h_id,
@@ -199,9 +200,40 @@ enum carenum{
  	farbe2,
  	kennzeichen,
  	fraktion,
-	Float:dl
+	Float:dl,
+	abgeschlossen
 
 }
+
+enum fcarenum{
+	fcarid,
+	model,
+	fraktion,
+	Float:fc_x,
+	Float:fc_y,
+	Float:fc_z,
+	Float:fc_r,
+	farbe1,
+	farbe2,
+	kennzeichen[64]
+}
+
+enum fbaseenum{
+	fb_id,
+	f_inter,
+	f_world,
+	f_color,
+	Float:f_dutyx,
+	Float:f_dutyy,
+	Float:f_dutyz,
+	Float:f_enterx,
+	Float:f_entery,
+	Float:f_enterz,
+	Float:f_exitx,
+	Float:f_exity,
+	Float:f_exitz,
+}
+
 enum frakenum{
 	f_ID,
 	f_name[128],
@@ -209,18 +241,6 @@ enum frakenum{
 	Float:f_y,
 	Float:f_z,
 	Float:f_r,
-	f_inter,
-	f_world,
-	f_color,
-	Float:f_dx,
-	Float:f_dy,
-	Float:f_dz,
-	Float:f_enx,
-	Float:f_eny,
-	Float:f_enz,
-	Float:f_exx,
-	Float:f_exy,
-	Float:f_exz,
 	f_green,
 	f_gold,
 	f_lsd,
@@ -253,6 +273,7 @@ enum autohauscarenum{
 	autohaus_id,
 	id_x
 }
+
 enum trashEnum{
 	Float:t_x,
 	Float:t_y,
@@ -272,8 +293,9 @@ enum jobEnum{
 
 //Globale Variablen
 new restartcounter;
-new MAX_FRAKS;
 new weatherdone;
+new MAX_FRAKS=0;
+new sekunden_timer;
 new weatherids[20]= {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
 new sInfo[MAX_PLAYERS][playerInfo];
 new hInfo[100][hausEnum];
@@ -288,6 +310,7 @@ new Text:kmhtd;
 new tanktimer = 0;
 new Text:Tachobox;
 new cInfo[50][carenum];
+new fcar[100][fcarenum];
 new Float:dx,Float:dy,Float:dz;
 new stream[512];
 new gNetStatsPlayerId = INVALID_PLAYER_ID;
@@ -297,7 +320,7 @@ new SAMAGCARS[30];
 new badfraks[9] = {5,6,10,11,13,14,17,18,19};
 //new staatsfraks[6] = {1,2,3,4,7,20};
 new MySQL:dbhandle;
-
+new fbase[21][fbaseenum];
 
 //Mapping
 new p1,p2,p3,pdschranke,pdtor;
@@ -446,6 +469,11 @@ isaduty(playerid)
 	return 0;
 }
 
+isLeader(playerid){
+	if(sInfo[playerid][fleader] > 0)return 1;
+	return 0;
+}
+
 loadJobs()
 {
 for(new i=0; i<sizeof(JPs); i++)
@@ -479,7 +507,7 @@ stock WPM(pID,const msg[])
 }
 
 //SCM Send Client Message
-stock SCM(pID,color,msg[])
+stock SCM(pID,color, const msg[])
 {
 	SendClientMessage(pID,color,msg);
 	return 1;
@@ -538,17 +566,17 @@ public OnFrakCarsLoad()
 	for(new i=0; i<num_rows; i++)
 	{
 new id=getFreeCarID();
-cache_get_value_name_int(i,"model",cInfo[id][model]);
-cache_get_value_name_int(i,"fraktion",cInfo[id][fraktion]);
-cache_get_value_name_float(i,"x",cInfo[id][c_x]);
-cache_get_value_name_float(i,"y",cInfo[id][c_y]);
-cache_get_value_name_float(i,"z",cInfo[id][c_z]);
-cache_get_value_name_int(i,"id",cInfo[id][db_id]);
-cache_get_value_name_int(i,"f1",cInfo[id][farbe1]);
-cache_get_value_name_int(i,"f2",cInfo[id][farbe2]);
-cInfo[id][id_x]=CreateVehicle(cInfo[id][model],cInfo[id][c_x],cInfo[id][c_y],cInfo[id][c_z],cInfo[id][c_r],cInfo[id][farbe1],cInfo[id][farbe2],0);
-cache_get_value_name(i,"Kennzeichen",cInfo[id][kennzeichen],128);
-cache_get_value_float(i,"r",cInfo[id][c_r]);
+cache_get_value_name_int(i,"model",fcar[id][model]);
+cache_get_value_name_int(i,"fraktion",fcar[id][fraktion]);
+cache_get_value_name_float(i,"x",fcar[id][fc_x]);
+cache_get_value_name_float(i,"y",fcar[id][fc_y]);
+cache_get_value_name_float(i,"z",fcar[id][fc_z]);
+cache_get_value_name_int(i,"id",fcar[id][fcarid]);
+cache_get_value_name_int(i,"f1",fcar[id][farbe1]);
+cache_get_value_name_int(i,"f2",fcar[id][farbe2]);
+cInfo[id][id_x]=CreateVehicle(fcar[id][model],fcar[id][fc_x],fcar[id][fc_y],fcar[id][fc_z],fcar[id][fc_r],fcar[id][farbe1],fcar[id][farbe2],0);
+cache_get_value_name(i,"Kennzeichen",fcar[id][kennzeichen],128);
+cache_get_value_float(i,"r",fcar[id][fc_r]);
 cache_get_value_int(i,"tank",tank[id]);
 	}
 	return 1;
@@ -567,18 +595,18 @@ public OnFraksLoad()
 		cache_get_value_name_float(i,"f_x",fInfo[i][f_x]);
 		cache_get_value_name_float(i,"f_y",fInfo[i][f_y]);
 		cache_get_value_name_float(i,"f_z",fInfo[i][f_z]);
-		cache_get_value_name_int(i,"f_inter",fInfo[i][f_inter]);
-		cache_get_value_name_int(i,"f_world",fInfo[i][f_world]);
-		cache_get_value_name(i,"f_color",fInfo[i][f_color],128);
-		cache_get_value_name_float(i,"f_dx",fInfo[i][f_dx]);
-		cache_get_value_name_float(i,"f_dy",fInfo[i][f_dy]);
-		cache_get_value_name_float(i,"f_dz",fInfo[i][f_dz]);
-        cache_get_value_name_float(i,"f_enx",fInfo[i][f_enx]);
-        cache_get_value_name_float(i,"f_eny",fInfo[i][f_eny]);
-        cache_get_value_name_float(i,"f_enz",fInfo[i][f_enz]);
-        cache_get_value_name_float(i,"f_exx",fInfo[i][f_exx]);
-        cache_get_value_name_float(i,"f_exy",fInfo[i][f_exy]);
-        cache_get_value_name_float(i,"f_exz",fInfo[i][f_exz]);
+		cache_get_value_name_int(i,"f_inter",fbase[i][f_inter]);
+		cache_get_value_name_int(i,"f_world",fbase[i][f_world]);
+		cache_get_value_name(i,"f_color",fbase[i][f_color],128);
+		cache_get_value_name_float(i,"f_dutyx",fbase[i][f_dutyx]);
+		cache_get_value_name_float(i,"f_dutyy",fbase[i][f_dutyy]);
+		cache_get_value_name_float(i,"f_dutyz",fbase[i][f_dutyz]);
+        cache_get_value_name_float(i,"f_enterx",fbase[i][f_enterx]);
+        cache_get_value_name_float(i,"f_entery",fbase[i][f_entery]);
+        cache_get_value_name_float(i,"f_enterz",fbase[i][f_enterz]);
+        cache_get_value_name_float(i,"f_exitx",fbase[i][f_exitx]);
+        cache_get_value_name_float(i,"f_exity",fbase[i][f_exity]);
+        cache_get_value_name_float(i,"f_exitz",fbase[i][f_exitz]);
         cache_get_value_name_int(i,"Bank",fInfo[i][f_kasse]);
         cache_get_value_name_int(i,"Gold",fInfo[i][f_gold]);
         cache_get_value_name_int(i,"LSD",fInfo[i][f_lsd]);
@@ -592,11 +620,12 @@ public OnFraksLoad()
         cache_get_value_name(i,"rang5",fInfo[i][rangfunf],128);
         cache_get_value_name(i,"rang6",fInfo[i][rangsechs],128);
         cache_get_value_name_int(i,"ep",fInfo[i][ep]);
- 		CreatePickup(1239,1,fInfo[i][f_dx],fInfo[i][f_dy],fInfo[i][f_dz],0);
-    	CreatePickup(1239,1,fInfo[i][f_enx],fInfo[i][f_eny],fInfo[i][f_enz],0);
-    	CreatePickup(1239,1,fInfo[i][f_exx],fInfo[i][f_exy],fInfo[i][f_exz],0);
+ 		CreatePickup(1239,1,fbase[i][f_dutyx],fbase[i][f_dutyy],fbase[i][f_dutyz],0);
+    	CreatePickup(1239,1,fbase[i][f_enterx],fbase[i][f_entery],fbase[i][f_enterz],0);
+    	CreatePickup(1239,1,fbase[i][f_exitx],fbase[i][f_exity],fbase[i][f_exitz],0);
    		format(string,sizeof(string),"Fraktion: %s wurde Geladen",fInfo[i][f_name]);
 		printf(string);
+		MAX_FRAKS++;
 	}
 	return 1;
 }
@@ -780,7 +809,6 @@ mysql_log(DEBUG);
 	TextDrawLetterSize(Tachobox,1.000000,-5.000000);
 	TextDrawAlignment(Tachobox,1);
 	//MySQL
-	
 
 	//Gebäude laden
 	for(new i=0; i<sizeof(bInfo); i++)
@@ -833,11 +861,10 @@ mysql_log(DEBUG);
 	gettime(hour,minute,second);
 	SetWorldTime(hour);
 	
-	
-	
-	//FRAKS zählen
-	MAX_FRAKS = mysql_tquery(dbhandle," SELECT COUNT(ID) FROM fraktionen");
-	
+			//FRAKS zählen
+	new mfstring[16];
+	format(mfstring,sizeof(mfstring),"MF: %i",MAX_FRAKS);
+	printf(mfstring);
 	return 1;
 }
 
@@ -974,10 +1001,10 @@ getVehicleName(v_model)
 public isPlayerInRangeOfFrakEnterPoint(playerid)
 {
     for(new i=0; i<sizeof(fInfo); i++){
-	if(!IsPlayerInRangeOfPoint(playerid,1.5,fInfo[i][f_enx],fInfo[i][f_eny],fInfo[i][f_enz]))continue;
-	SetPlayerInterior(playerid,fInfo[i][f_inter]);
-	SetPlayerVirtualWorld(playerid,fInfo[i][f_world]);
-	SetPlayerPos(playerid,fInfo[i][f_exx],fInfo[i][f_exy],fInfo[i][f_exz]);
+	if(!IsPlayerInRangeOfPoint(playerid,1.5,fbase[i][f_enterx],fbase[i][f_entery],fbase[i][f_enterz]))continue;
+	SetPlayerInterior(playerid,fbase[i][f_inter]);
+	SetPlayerVirtualWorld(playerid,fbase[i][f_world]);
+	SetPlayerPos(playerid,fbase[i][f_exitx],fbase[i][f_exity],fbase[i][f_exitz]);
 	}
 	return 1;
 }
@@ -985,8 +1012,8 @@ public isPlayerInRangeOfFrakEnterPoint(playerid)
 public isPlayerInRangeOfFrakExitPoint(playerid)
 {
     for(new i=0; i<sizeof(fInfo); i++){
-	if(!IsPlayerInRangeOfPoint(playerid,1.5,fInfo[i][f_exx],fInfo[i][f_exy],fInfo[i][f_exz]))continue;
-	SetPlayerPos(playerid,fInfo[i][f_enx],fInfo[i][f_eny],fInfo[i][f_enz]);
+	if(!IsPlayerInRangeOfPoint(playerid,1.5,fbase[i][f_exitx],fbase[i][f_exity],fbase[i][f_exitz]))continue;
+	SetPlayerPos(playerid,fbase[i][f_enterx],fbase[i][f_entery],fbase[i][f_enterz]);
 	SetPlayerInterior(playerid,0);
 	SetPlayerVirtualWorld(playerid,0);
 	}
@@ -1006,27 +1033,6 @@ public sekunde()
 	SendClientMessageToAll(COLOR_BLUE,"Serverlink: https://dsc.gg/ioannis");
 	SendClientMessageToAll(COLOR_BLUE,"Ich freue mich auf euch! :)");
 	}
-	//Fraks enter
-    for(new j = 0; j <= GetPlayerPoolSize(); j++) // note that we assign the return value to a new variable (j) to avoid calling the function with each iteration
-    {
-	for(new i=0; i<sizeof(fInfo); i++){
-	if(!IsPlayerInRangeOfPoint(j,1.5,fInfo[i][f_enx],fInfo[i][f_eny],fInfo[i][f_enz]))continue;
-
-	//SetPlayerInterior(j,fInfo[i][f_inter]);
-	//SetPlayerVirtualWorld(j,fInfo[i][f_world]);
-	//SetPlayerPos(j,fInfo[i][f_exx],fInfo[i][f_exy],fInfo[i][f_exz]);
-
-	}
-
-	//Fraks exit
-	for(new i=0; i<sizeof(fInfo);i++)
-	{
-	if(!IsPlayerInRangeOfPoint(j,1.5,fInfo[i][f_exx],fInfo[i][f_exy],fInfo[i][f_exz]))continue;
-//	SetPlayerPos(j,fInfo[i][f_enx],fInfo[i][f_eny],fInfo[i][f_enz]);
-//	SetPlayerInterior(j,0);
-//	SetPlayerVirtualWorld(j,0);
-	}
-	 }
 
 	new string[128];
 	new tstring[128];
@@ -1062,17 +1068,18 @@ public sekunde()
 	TextDrawSetString(uhrzeitlabel,string);
 	if(minute==00){
 	SetWorldTime(hour);
+	return 1;
 	}
-	if(minute == 30)
-	{
-		weatherdone=0;
-		return 0;
-	}
-	if(minute==10 && weatherdone==0)
+	if(minute==10)
 	{
 	changeweather();
 	weatherdone=1;
 	return 1;
+	}
+	
+	if(minute==30){
+		weatherdone=0;
+		return 1;
 	}
 	return 0;
 }
@@ -1082,7 +1089,7 @@ stock changeweather(){
 	SendClientMessageToAll(COLOR_ORANGE,"NR Bot: Es liegt eine Wetteränderung in ganz San Andreas vor.");
 	new wID = random(sizeof(weatherids));
 	SetWeather(wID);
-	return 0;
+	return 1;
 }
 
 //wetter für Person
@@ -1219,6 +1226,9 @@ savePlayer(playerid)
 	mysql_format(dbhandle,query,sizeof(query),"UPDATE user SET level='%i',money='%i',adminlevel='%i',skin='%i',fraktion='%i',frang='%i',fleader='%i',fskin='%i',spawnchange='%s',x='%f',y='%f',z='%f',donut='%i', deaths='%i', orangelist='%i', green='%i', gold='%i', lsd='%i' WHERE id='%i'",
 	GetPlayerScore(playerid),GetPlayerMoney(playerid),sInfo[playerid][adminlevel],sInfo[playerid][skin],sInfo[playerid][fraktion],sInfo[playerid][frang],sInfo[playerid][fraktion],sInfo[playerid][fSkin],sInfo[playerid][spawnchange],sInfo[playerid][sx],sInfo[playerid][sy],sInfo[playerid][sz],sInfo[playerid][pdonut],sInfo[playerid][deaths],sInfo[playerid][pOL],sInfo[playerid][pgreen],sInfo[playerid][pgold],sInfo[playerid][plsd],sInfo[playerid][db_id]);
 	mysql_tquery(dbhandle,query);
+	new lquery[1024];
+	mysql_format(dbhandle,lquery,sizeof(lquery),"INSERT INTO sessions (playerid, login, logout) VALUES ('%i', '%s', '%s')",sInfo[playerid][db_id], sInfo[playerid][login],sInfo[playerid][logout]);
+	mysql_tquery(dbhandle,lquery);
 	sInfo[playerid][eingeloggt]=0;
 	return 1;
 }
@@ -1284,13 +1294,19 @@ stock SendTeamMessage(color, const string[])
 
 public OnPlayerDisconnect(playerid, reason)
 {
+new logoutstamp[128];
+new Year, Month, Day,Hour, Minute, Second;
+gettime(Hour, Minute, Second);
+getdate(Year, Month, Day);
+	
+format(logoutstamp,sizeof(logoutstamp),"%02d/%02d/%d um %02d:%02d:%02d",Day,Month,Year,Hour, Minute, Second);
+sInfo[playerid][logout]=logoutstamp;
 savePlayer(playerid);
 SetPlayerColor(playerid, COLOR_WHITE);
 for(new i=0; i<sizeof(cInfo); i++)
 	{
 	    if(cInfo[i][id_x]==0)continue;
-	    if(cInfo[i][besitzer] == sInfo[playerid][db_id])continue;
-	    GetVehiclePos(cInfo[i][id_x],cInfo[i][c_x],cInfo[i][c_y],cInfo[i][c_z]);
+	    if(cInfo[i][besitzer] != sInfo[playerid][db_id])continue;
 	    new query[128];
 		new debugmsg[64];
 		format(debugmsg,sizeof(debugmsg),"%i | %i",cInfo[i][farbe1],cInfo[i][farbe2]);
@@ -1364,6 +1380,14 @@ public OnPlayerSpawn(playerid)
     SetPlayerColor(playerid, 0xFFFFFFFF);
     StopAudioStreamForPlayer(playerid);
     SetPlayerScore(playerid, sInfo[playerid][level]);
+	new loginstamp[128];
+	new Year, Month, Day,Hour, Minute, Second;
+	gettime(Hour, Minute, Second);
+	getdate(Year, Month, Day);
+	
+	format(loginstamp,sizeof(loginstamp),"%02d/%02d/%d um %02d:%02d:%02d",Day,Month,Year,Hour, Minute, Second);
+	sInfo[playerid][login]=loginstamp;
+	
         // Fraktion
     if (strcmp(sInfo[playerid][spawnchange], "fraktion")==0)
         {
@@ -1371,8 +1395,8 @@ public OnPlayerSpawn(playerid)
             fID = sInfo[playerid][fraktion];
             SetPlayerPos(playerid, fInfo[fID][f_x], fInfo[fID][f_y], fInfo[fID][f_z]);
             SetPlayerFacingAngle(playerid, fInfo[fID][f_r]);
-            SetPlayerInterior(playerid, fInfo[fID][f_inter]);
-            SetPlayerVirtualWorld(playerid, fInfo[fID][f_world]);
+            SetPlayerInterior(playerid, fbase[fID][f_inter]);
+            SetPlayerVirtualWorld(playerid, fbase[fID][f_world]);
         }
         else
             // Haus
@@ -2307,6 +2331,45 @@ stock loadxmas()
 	return 1;
 }
 //Adminbefehle
+
+CMD:showservervehs(playerid,params[]){
+	new string[64];
+	if(!isAdmin(playerid,5))return SEM(playerid,"Du bist kein Admin/dein Adminrang ist zu niedrig.");
+	format(string,sizeof(string),"Auf dem Server befinden sich %i Fahrzeuge.ä#",GetVehiclePoolSize());
+	SendClientMessage(playerid,COLOR_GREY,string);
+	return 1;
+}
+CMD:ainvite(playerid,params[])
+{
+	new pID,fID,string[128],spawn[64];
+	if(!isAdmin(playerid,3))return SendClientMessage(playerid,COLOR_RED,"FEHLER: {FFFFFF}Du bist kein Admin/dein Adminrang ist zu niedrig.");
+	if(sscanf(params,"ri",pID,fID))return SendClientMessage(playerid,COLOR_GREY,"FEHLER: /ainvite [playerid] [frakid]");
+	sInfo[pID][fraktion] = fID;
+	format(string,sizeof(string),"ADMIN: Du wurdest von %s administrativ in die Fraktion mit der ID %i invitet!",getPlayerName(playerid),fID);
+	SendClientMessage(pID, COLOR_YELLOW,string);
+	spawn = "fraktion";
+	sInfo[pID][spawnchange] = spawn;
+	SpawnPlayer(pID);
+	return 1;
+}
+
+CMD:auninvite(playerid,params[])
+{
+	new pID,string[128],zskin,spawn[64];
+	zskin = sInfo[pID][skin];
+	if(!isAdmin(playerid,3))return SendClientMessage(playerid,COLOR_RED,"FEHLER: {FFFFFF}Du bist kein Admin/dein Adminrang ist zu niedrig.");
+	if(sscanf(params,"r",pID))return SendClientMessage(playerid,COLOR_GREY,"FEHLER: /auninvite [playerid]");
+	sInfo[pID][fraktion] = 0;
+	format(string,sizeof(string),"ADMIN: Du wurdest von %s administrativ aus deiner Fraktion uninvitet!",getPlayerName(playerid));
+	SendClientMessage(pID, COLOR_YELLOW,string);
+	SetPVarInt(pID,"fduty",0);
+	spawn = "noob";
+	sInfo[pID][spawnchange] = spawn;
+	SetPlayerSkin(pID,zskin);
+	SpawnPlayer(pID);
+	return 1;
+}
+
 CMD:checkspawn(playerid,params[])
 {
 new input,output[64];
@@ -2615,12 +2678,17 @@ CMD:makeleader(playerid,params[])
 if(!isAdmin(playerid,4))return SendClientMessage(playerid,COLOR_GREY,"Du bist kein "#SERVERTAG" Mitglied!");
 new pID,fID,string[128];
 if(sscanf(params,"ui",pID,fID))return SendClientMessage(playerid, COLOR_GREY, "INFO: /makeleader [playerid] [frakID]");
-if(fID > 20) return SendClientMessage(playerid, COLOR_GREY,"Diese Fraktion existiert nicht.");
+if(fID >= MAX_FRAKS) return SendClientMessage(playerid, COLOR_GREY,"Diese Fraktion existiert nicht.");
 sInfo[pID][fraktion] = fID;
 sInfo[pID][frang] = 6;
 sInfo[pID][fleader]=fID;
 SetPVarInt(pID,"fduty",0);
 SetPlayerSkin(pID,sInfo[pID][skin]);
+if(fID == 0){
+	new spawn[64];
+	spawn = "noob";
+	sInfo[pID][spawnchange] = spawn;
+}
 format(string,sizeof(string),"INFO: %s hat dich zum Leader der Fraktion %s ernannt.",getPlayerName(playerid),fInfo[fID][f_name]);
 SendClientMessage(pID, COLOR_YELLOW, string);
 SendClientMessage(playerid,COLOR_RED,"Du hast einen Spieler zum Leader ernannt.");
@@ -2645,6 +2713,7 @@ for(new i; i<sizeof(cInfo); i++)
     if(cInfo[i][id_x] != vID) continue;
     cInfo[i][farbe1] = c1;
     cInfo[i][farbe2] = c2;
+	ChangeVehicleColor(vID,c1,c2);
     break;
 }
 return 1;
@@ -3415,56 +3484,48 @@ return 1;
 //car
 CMD:car(playerid,params[])
 {
-new option[10];
-if(sscanf(params,"s[10]",option))return WPM(playerid,"/car [lock|tow|search]");
-new Float:x,Float:y,Float:z,Float:r;
-/*new
-	iEngine, iLights, iAlarm,
-	iDoors, iBonnet, iBoot,
-	iObjective,
+	if(sInfo[playerid][eingeloggt]==0)return SCM(playerid,COLOR_RED,"FEHLER: {FFFFFF}Du bist nicht eingeloggt!");
+	new option[10];
+	if(sscanf(params,"s[10]",option))return WPM(playerid,"/car [lock|tow|search]");
+	new Float:x,Float:y,Float:z,Float:r;
+	new
+		iEngine, iLights, iAlarm,
+		iDoors, iBonnet, iBoot,
+		iObjective;
 
 //LOCK
-if(!strcmp(option, "lock", false))
-{
-	for(new i=0;i<GetVehiclePoolSize();i++)
+	if(strcmp(option,"lock",false)==0)
 	{
-		GetVehicleParamsEx(i,iEngine, iLights, iAlarm,iDoors, iBonnet, iBoot,iObjective);
-		GetVehiclePos(i,x,y,z);
-	//	if(!IsPlayerInRangeOfPoint(playerid,10,x,y,z))return SendClientMessage(playerid,COLOR_RED,"FEHLER:{FFFFFF} Du bist nicht in der Nähe eines Fahrzeuges.");
-		if(!strcmp(cInfo[i][besitzer],getPlayerName(playerid),false))return SendClientMessage(playerid,COLOR_RED,"FEHLER: {FFFFFF}Du bist nicht der Besitzer dieses Fahrzeuges.");
-
-		if(iDoors == 1){
-		SetVehicleParamsForPlayer(i,playerid,0,0);
-		SendClientMessage(playerid,COLOR_YELLOW,"FAHRZEUG:{FFFFFF} Fahrzeug {80fe45}aufgeschlossen!");
-		return 1;
-		}
-		else if(iDoors == 0){
-		SetVehicleParamsForPlayer(i,playerid,0,1);
-		SendClientMessage(playerid,COLOR_YELLOW,"FAHRZEUG:{FFFFFF} Fahrzeug {ff0000}abgeschlossen!");
-		}
+	SCM(playerid,COLOR_RED,"SNENS");
+	new Float:vx,Float:vy,Float:vz;
+	new string[64];
+	for(new i=0;i<=GetVehiclePoolSize();i++)
+	{
+		format(string,sizeof(string),"%i",i);
+		SendClientMessageToAll(COLOR_GREY,string);   	
 	}
-
+	return 1;
 }
-*/
-if(!strcmp(option,"park",false))
-{
-new string[128];
-for(new i=0; i<GetVehiclePoolSize();i++){
-if(IsPlayerInVehicle(playerid,i) && cInfo[i][besitzer] == sInfo[playerid][db_id]){
-GetPlayerPos(playerid,x,y,z);
-GetPlayerFacingAngle(playerid,r);
-format(string,sizeof(string), "%f %f %f",cInfo[i][c_x],cInfo[i][c_y],cInfo[i][c_z]);
-SendClientMessage(playerid,COLOR_GREEN,string);
-cInfo[i][c_x]=x;
-cInfo[i][c_y]=y;
-cInfo[i][c_z]=z;
-cInfo[i][c_r]=r;
-}}
-SendClientMessage(playerid,COLOR_GREEN,"ERFOLGREICH: {FFFFFF}Du hast das fahrzeug geparkt!");
 
-return 1;
-}
-return 1;
+	if(strcmp(option,"park",false)==0)
+	{
+	new string[128];
+	for(new i=0; i<GetVehiclePoolSize();i++){
+	if(IsPlayerInVehicle(playerid,i) && cInfo[i][besitzer] == sInfo[playerid][db_id]){
+	GetPlayerPos(playerid,x,y,z);
+	GetPlayerFacingAngle(playerid,r);
+	format(string,sizeof(string), "%f %f %f",cInfo[i][c_x],cInfo[i][c_y],cInfo[i][c_z]);
+	SendClientMessage(playerid,COLOR_GREEN,string);
+	cInfo[i][c_x]=x;
+	cInfo[i][c_y]=y;
+	cInfo[i][c_z]=z;
+	cInfo[i][c_r]=r;
+	}}
+	SendClientMessage(playerid,COLOR_GREEN,"ERFOLGREICH: {FFFFFF}Du hast das Fahrzeug geparkt!");
+
+	return 1;
+	}
+	return 1;
 }
 
 //fcar
@@ -3481,11 +3542,12 @@ return 1;
 CMD:houses(playerid,params[])
 {
 new string[128];
-new name[MAX_PLAYER_NAME];
+new name[128];
 name = getPlayerName(playerid);
 SendClientMessage(playerid,COLOR_HBLUE,"[______________Hausübersicht______________]");
-for(new i=0;i<sizeof(hInfo);i++){
-	if(hInfo[i][h_besitzer]==name[playerid]){
+for(new i=0;i<=sizeof(hInfo);i++){
+
+	if(strcmp(hInfo[i][h_besitzer], getPlayerName(playerid), false)){
 	format(string,sizeof(string),"HAUS: {FFFFFF}Hausnummer: %i | Status: Eigentum",i);
 	SendClientMessage(playerid,COLOR_HBLUE,string);
 		}
@@ -3494,13 +3556,6 @@ for(new i=0;i<sizeof(hInfo);i++){
 return 1;
 }
 
-CMD:cv(playerid,params[])
-{
-new string[128];
-format(string,sizeof(string),"%i",GetVehiclePoolSize());
-SendClientMessageToAll(COLOR_RED,string);
-return 1;
-}
 //vehicles
 CMD:vehicles(playerid,params[])
 {
@@ -3529,7 +3584,7 @@ switch (fID)
 	case 1:
 	{
 	//SAPD Duty
-	if(IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz])){
+	if(IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz])){
 	SendClientMessage(playerid,COLOR_GREEN,"ERFOLG: {FFFFFF}Du hast dich für den Dienst ausgerüstet!");
 	GivePlayerWeapon(playerid,41,500);
 	GivePlayerWeapon(playerid,3,1);
@@ -3540,7 +3595,7 @@ switch (fID)
 	case 2:
 	{
 	//FBI DUTY
-	if(IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+	if(IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz]))
 	{
 	SendClientMessage(playerid,COLOR_GREEN,"ERFOLG: {FFFFFF}Du hast dich für den Dienst ausgerüstet!");
 	staatsequip(playerid);
@@ -3550,7 +3605,7 @@ switch (fID)
 	case 3:
 	{
 	//Army Duty
-	if(IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+	if(IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz]))
 	{
 	SendClientMessage(playerid,COLOR_GREEN,"ERFOLG: {FFFFFF}Du hast dich für den Dienst ausgerüstet!");
 	staatsequip(playerid);
@@ -3560,7 +3615,7 @@ switch (fID)
 	}}
 	case 4:
 	{
-    if(IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+    if(IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz]))
 	{
 	//MEIDCS Duty
 	SendClientMessage(playerid,COLOR_GREEN,"ERFOLG: {FFFFFF}Du hast dich für den Dienst ausgerüstet!");
@@ -3571,7 +3626,7 @@ switch (fID)
 	}}
 	case 7:
 	{
-    if(IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+    if(IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz]))
 	{
 	//REGIERUNG Duty
    	SendClientMessage(playerid,COLOR_GREEN,"ERFOLG: {FFFFFF}Du hast dich für den Dienst ausgerüstet!");
@@ -3581,7 +3636,7 @@ switch (fID)
 	}}
 	case 9:
 	{
-    if(isPlayerinSAMAGCARS(playerid) && GetPVarInt(playerid,"fduty")==0 || IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+    if(isPlayerinSAMAGCARS(playerid) && GetPVarInt(playerid,"fduty")==0 || IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz]))
 	{
 	//SAM AG Duty
 	SendClientMessage(playerid,COLOR_GREEN,"ERFOLG: {FFFFFF}Du hast dich für den Dienst ausgerüstet!");
@@ -3593,7 +3648,7 @@ switch (fID)
 	}}
 	case 20:
 	{
-	if(IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+	if(IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz]))
 	{
 	SendClientMessage(playerid,COLOR_GREEN,"ERFOLG: {FFFFFF}Du hast dich für den Dienst ausgerüstet!");
 	//DMV Duty
@@ -3627,7 +3682,7 @@ switch (fID)
 	case 1:
 	{
 	//SAPD Duty
-	if(IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz])){
+	if(IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz])){
 	SendClientMessage(playerid,COLOR_INFO,"INFO: {FFFFFF}Du bist nun als Beamter des SA:PD im Dienst.");
 	SetPlayerSkin(playerid,sInfo[playerid][fSkin]);
 	SetPVarInt(playerid,"fduty",1);
@@ -3637,7 +3692,7 @@ switch (fID)
 	case 2:
 	{
 	//FBI DUTY
-	if(IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+	if(IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz]))
 	{
 	SendClientMessage(playerid,COLOR_INFO,"INFO: {FFFFFF}Du bist nun als Agent des FBI im Dienst.");
 	SetPVarInt(playerid,"fduty",1);
@@ -3648,7 +3703,7 @@ switch (fID)
 	case 3:
 	{
 	//Army Duty
-	if(IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+	if(IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz]))
 	{
 	SendClientMessage(playerid,COLOR_INFO,"INFO: {FFFFFF}Du bist nun als Soldat der SA:Army im Dienst.");
 	SetPlayerSkin(playerid,sInfo[playerid][fSkin]);
@@ -3658,7 +3713,7 @@ switch (fID)
 	}}
 	case 4:
 	{
-    if(IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+    if(IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz]))
 	{
 	//MEIDCS Duty
 	SendClientMessage(playerid,COLOR_INFO,"INFO: {FFFFFF}Du bist nun als Arzt im Dienst.");
@@ -3669,30 +3724,30 @@ switch (fID)
 	}}
 	case 7:
 	{
-    if(IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+    if(IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz]))
 	{
 	//REGIERUNG Duty
 	SetPlayerSkin(playerid,sInfo[playerid][fSkin]);
 	SendClientMessage(playerid,COLOR_INFO,"INFO: {FFFFFF}Du bist nun als Beamter der Regierung im Dienst.");
 	SetPVarInt(playerid,"fduty",1);
-	SetPlayerColor(playerid,fInfo[fID][f_color]);
+	SetPlayerColor(playerid,fbase[fID][f_color]);
 	return 1;
 	}}
 	case 9:
 	{
-    if(isPlayerinSAMAGCARS(playerid) && GetPVarInt(playerid,"fduty")==0 || IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+    if(isPlayerinSAMAGCARS(playerid) && GetPVarInt(playerid,"fduty")==0 || IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz]))
 	{
 	//SAM AG Duty
 	SetPlayerSkin(playerid,sInfo[playerid][fSkin]);
 	SendClientMessage(playerid,COLOR_INFO,"INFO:{FFFFFF} Du bist nun als Reporter der SAM:AG verfügbar.");
 	sInfo[playerid][tazer]=10;
 	SetPVarInt(playerid,"fduty",1);
-	SetPlayerColor(playerid,fInfo[fID][f_color]);
+	SetPlayerColor(playerid,fbase[fID][f_color]);
 	return 1;
 	}}
-	case 20:
+	case 18:
 	{
-	if(IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+	if(IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz]))
 	{
 	//DMV Duty
 	SetPlayerSkin(playerid,sInfo[playerid][fSkin]);
@@ -3701,7 +3756,7 @@ switch (fID)
 	SendClientMessage(playerid,COLOR_INFO,"REGIERUNG: {FFFFFF}Du bist nun als Fahrlehrer im Dienst.");
 	SetPVarInt(playerid,"fduty",1);
 	sInfo[playerid][tazer]=10;
-	SetPlayerColor(playerid,fInfo[fID][f_color]);
+	SetPlayerColor(playerid,fbase[fID][f_color]);
 	SendClientMessageToAll(COLOR_GREEN,string);
 	return 1;
 	}}
@@ -3723,7 +3778,7 @@ else if(GetPVarInt(playerid,"fduty")==1)
 	case 1:
 	{
 	//SAPD offDuty
-	if(IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz])){
+	if(IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz])){
 	SendClientMessage(playerid,COLOR_INFO,"INFO: {FFFFFF}Du bist nicht mehr als Beamter des SA:PD im Dienst.");
 	SetPVarInt(playerid,"fduty",0);
 	SetPlayerColor(playerid,COLOR_WHITE);
@@ -3733,7 +3788,7 @@ else if(GetPVarInt(playerid,"fduty")==1)
 	case 2:
 	{
 	//FBI offDUTY
-	if(IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+	if(IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz]))
 	{
 	SendClientMessage(playerid,COLOR_INFO,"INFO: {FFFFFF}Du bist nicht mehr als Agent des FBI im Dienst.");
 	SetPVarInt(playerid,"fduty",0);
@@ -3744,7 +3799,7 @@ else if(GetPVarInt(playerid,"fduty")==1)
 	case 3:
 	{
 	//Army Duty
-	if(IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+	if(IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz]))
 	{
 	SendClientMessage(playerid,COLOR_INFO,"INFO: {FFFFFF}Du bist nicht mehr als Soldat der SA:Army im Dienst.");
 	SetPVarInt(playerid,"fduty",0);
@@ -3754,7 +3809,7 @@ else if(GetPVarInt(playerid,"fduty")==1)
 	}}
 	case 4:
 	{
-    if(IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+    if(IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz]))
 	{
 	//MEIDCS Duty
 	SendClientMessage(playerid,COLOR_INFO,"INFO: {FFFFFF}Du bist nicht mehr als Arzt im Dienst.");
@@ -3765,7 +3820,7 @@ else if(GetPVarInt(playerid,"fduty")==1)
 	}}
 	case 7:
 	{
-    if(IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+    if(IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz]))
 	{
 	//REGIERUNG Duty
 	SetPlayerSkin(playerid,sInfo[playerid][skin]);
@@ -3776,7 +3831,7 @@ else if(GetPVarInt(playerid,"fduty")==1)
 	}}
 	case 9:
 	{
-    if(isPlayerinSAMAGCARS(playerid) || IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+    if(isPlayerinSAMAGCARS(playerid) || IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz]))
 	{
 	//SAM AG Duty
 	SetPlayerSkin(playerid,sInfo[playerid][skin]);
@@ -3787,7 +3842,7 @@ else if(GetPVarInt(playerid,"fduty")==1)
 	}}
 	case 20:
 	{
-	if(IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+	if(IsPlayerInRangeOfPoint(playerid,3.0,fbase[fID][f_dutyx],fbase[fID][f_dutyy],fbase[fID][f_dutyz]))
 	{
 	//DMV Duty
 	SetPlayerSkin(playerid,sInfo[playerid][skin]);
@@ -3806,13 +3861,30 @@ else if(GetPVarInt(playerid,"fduty")==1)
 return 1;
 }
 
+//suspend
+CMD:suspend(playerid,params[])
+{
+	new pID,zskin,string[128];
+	zskin = sInfo[pID][skin];
+	if(!isLeader(playerid))	return SendClientMessage(playerid,COLOR_RED,"FEHLER: {FFFFFF}Du bist kein Leader einer Fraktion!");
+	if(sscanf(params,"r",pID))return WPM(playerid,"/setfskin [playerid]");
+	if(sInfo[playerid][fleader] != sInfo[pID][fraktion])return SendClientMessage(playerid,COLOR_RED,"FEHLER: {FFFFFF}Diese Person ist nicht in deiner Fraktion");
+	if(GetPVarInt(pID,"fduty")==0)return SendClientMessage(playerid,COLOR_RED,"FEHLER: {FFFFFF}Die Person befindet sich nicht im Dienst!");
+	SetPlayerSkin(pID,zskin);
+	SetPVarInt(pID,"fduty",0);
+	format(string,sizeof(string),"DUTY: {FFFFFF}Du wurdest von %s suspendiert.",getPlayerName(playerid));
+	SendClientMessage(playerid,COLOR_YELLOW,string);
+	return 0;
+}
+
+
 /*
 //Duty
 CMD:duty(playerid,params[])
 {
 	new fID;
 	fID = sInfo[playerid][fraktion];
-	if(GetPVarInt(playerid,"fduty")==1 && IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]) || isPlayerinSAMAGCARS(playerid) && GetPVarInt(playerid,"fduty")==1){
+	if(GetPVarInt(playerid,"fduty")==1 && IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dutyx],fInfo[fID][f_dutyy],fInfo[fID][f_dutyz]) || isPlayerinSAMAGCARS(playerid) && GetPVarInt(playerid,"fduty")==1){
 	SetPVarInt(playerid,"fduty",0);
 	SetPlayerSkin(playerid,sInfo[playerid][skin]);
 	SendClientMessage(playerid,COLOR_INFO,"DIENST: {FFFFFF}Du bist nun nicht mehr im Dienst.");
@@ -3820,7 +3892,7 @@ CMD:duty(playerid,params[])
 	}
 	else
 	//SAPD Duty
-	if(isPlayerInFrak(playerid,1) && GetPVarInt(playerid,"fduty")==0 && IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz])){
+	if(isPlayerInFrak(playerid,1) && GetPVarInt(playerid,"fduty")==0 && IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dutyx],fInfo[fID][f_dutyy],fInfo[fID][f_dutyz])){
 	SendClientMessage(playerid,COLOR_INFO,"INFO: {FFFFFF}Du bist nun als Beamter des SA:PD im Dienst.");
 	GivePlayerWeapon(playerid,41,500);
 	GivePlayerWeapon(playerid,3,1);
@@ -3832,7 +3904,7 @@ CMD:duty(playerid,params[])
 	}
 	else
 	//FBI Duty
-	if(isPlayerInFrak(playerid,2) && GetPVarInt(playerid,"fduty")==0 && IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+	if(isPlayerInFrak(playerid,2) && GetPVarInt(playerid,"fduty")==0 && IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dutyx],fInfo[fID][f_dutyy],fInfo[fID][f_dutyz]))
 	{
 	staatsequip(playerid);
 	SendClientMessage(playerid,COLOR_INFO,"INFO: {FFFFFF}Du bist nun als Agent des FBI im Dienst.");
@@ -3843,7 +3915,7 @@ CMD:duty(playerid,params[])
 	}
 	else
 	//Army Duty
-	if(isPlayerInFrak(playerid,3) && GetPVarInt(playerid,"fduty")==0 && IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+	if(isPlayerInFrak(playerid,3) && GetPVarInt(playerid,"fduty")==0 && IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dutyx],fInfo[fID][f_dutyy],fInfo[fID][f_dutyz]))
 	{
 	staatsequip(playerid);
 	SendClientMessage(playerid,COLOR_INFO,"INFO: {FFFFFF}Du bist nun als Soldat der SA:Army im Dienst.");
@@ -3851,7 +3923,7 @@ CMD:duty(playerid,params[])
 	SetPlayerColor(playerid,COLOR_GREEN);
 	SetPlayerArmour(playerid,100);
 	}
-	else if(isPlayerInFrak(playerid,4) && GetPVarInt(playerid,"fduty")==0 && IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+	else if(isPlayerInFrak(playerid,4) && GetPVarInt(playerid,"fduty")==0 && IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dutyx],fInfo[fID][f_dutyy],fInfo[fID][f_dutyz]))
 	{
 	//MEIDCS Duty
 	GivePlayerWeapon(playerid,41,500);
@@ -3862,7 +3934,7 @@ CMD:duty(playerid,params[])
 	SetPlayerColor(playerid,fInfo[fID][f_color]);
 	SetPlayerArmour(playerid,100);
 	}
-	else if(isPlayerInFrak(playerid,7) && GetPVarInt(playerid,"fduty")==0 && IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+	else if(isPlayerInFrak(playerid,7) && GetPVarInt(playerid,"fduty")==0 && IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dutyx],fInfo[fID][f_dutyy],fInfo[fID][f_dutyz]))
 	{
 	//REGIERUNG Duty
 	SetPlayerSkin(playerid,sInfo[playerid][fSkin]);
@@ -3872,7 +3944,7 @@ CMD:duty(playerid,params[])
 	SetPlayerColor(playerid,fInfo[fID][f_color]);
 	SetPlayerArmour(playerid,100);
 	}
-	else if(isPlayerinSAMAGCARS(playerid) && isPlayerInFrak(playerid,9) && GetPVarInt(playerid,"fduty")==0 || isPlayerInFrak(playerid,9) && GetPVarInt(playerid,"fduty")==0 && IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+	else if(isPlayerinSAMAGCARS(playerid) && isPlayerInFrak(playerid,9) && GetPVarInt(playerid,"fduty")==0 || isPlayerInFrak(playerid,9) && GetPVarInt(playerid,"fduty")==0 && IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dutyx],fInfo[fID][f_dutyy],fInfo[fID][f_dutyz]))
 	{
 	//SAM AG Duty
 	SetPlayerSkin(playerid,sInfo[playerid][fSkin]);
@@ -3884,7 +3956,7 @@ CMD:duty(playerid,params[])
 	SetPlayerColor(playerid,fInfo[fID][f_color]);
 	SetPlayerArmour(playerid,100);
 	}
-	else if(isPlayerInFrak(playerid,20) && GetPVarInt(playerid,"fduty")==0 && IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dx],fInfo[fID][f_dy],fInfo[fID][f_dz]))
+	else if(isPlayerInFrak(playerid,20) && GetPVarInt(playerid,"fduty")==0 && IsPlayerInRangeOfPoint(playerid,3.0,fInfo[fID][f_dutyx],fInfo[fID][f_dutyy],fInfo[fID][f_dutyz]))
 	{
 	//DMV Duty
 	SetPlayerSkin(playerid,sInfo[playerid][fSkin]);
@@ -4088,7 +4160,7 @@ GetPlayerArmour(pID,arm);
 ping = GetPlayerPing(pID);
 name = getPlayerName(pID);
 plevel = GetPlayerScore(pID);
-format(string,sizeof(string),"Name: %s  Level: %i  Ping:%i  HP:%.0f  Armour:%.0f",name,plevel,ping,health,arm);
+format(string,sizeof(string),"Name: %s  Level: %i  Ping: %i  HP: %.0f  Armour: %.0f",name,plevel,ping,health,arm);
 SendClientMessage(playerid,COLOR_WHITE,string);
 return 1;
 }
@@ -4302,7 +4374,7 @@ CMD:f(playerid,params[])
 	new string[1024];
 	new input[75];
 	new rank[128]="SNNES";
-	if(isPlayerinStaat(playerid))return SEM(playerid,"Du bist nicht befugt!");
+	if(isPlayerinStaat(playerid) || sInfo[playerid][fraktion]==0)return SEM(playerid,"Du bist nicht befugt!");
 	if(sscanf(params,"s[75]",input))return WPM(playerid,"/r [nachricht]");
 	new frank = sInfo[playerid][frang];
 	new fID = sInfo[playerid][fraktion];
@@ -4612,7 +4684,7 @@ CMD:sethouselevel(playerid,params[])
 	    SEM(playerid,"Dein Adminrang ist zu niedrig.");
 	new tmp_level;
 	if(sscanf(params, "i", tmp_level))return
-	    WPM(playerid, "/sethouselevel [preis]");
+	    WPM(playerid, "/sethouselevel [level]");
     for(new i=0; i<sizeof(hInfo); i++)
 	{
 	    if(!hInfo[i][h_id])continue;
@@ -5012,8 +5084,8 @@ CMD:exit(playerid,params[])
 	 }
 	for(new i=0; i<sizeof(fInfo);i++)
 	{
-	if(!IsPlayerInRangeOfPoint(playerid,10,fInfo[i][f_exx],fInfo[i][f_exy],fInfo[i][f_exz]))continue;
-	SetPlayerPos(playerid,fInfo[i][f_enx],fInfo[i][f_eny],fInfo[i][f_enz]);
+	if(!IsPlayerInRangeOfPoint(playerid,10,fbase[i][f_exitx],fbase[i][f_exity],fbase[i][f_exitz]))continue;
+	SetPlayerPos(playerid,fbase[i][f_enterx],fbase[i][f_entery],fbase[i][f_enterz]);
 	SetPlayerInterior(playerid,0);
 	SetPlayerVirtualWorld(playerid,0);
 	}
@@ -5048,10 +5120,10 @@ CMD:enter(playerid,params[])
 	}
 	for(new i=0; i<sizeof(fInfo);i++)
 	{
-	if(!IsPlayerInRangeOfPoint(playerid,10,fInfo[i][f_enx],fInfo[i][f_eny],fInfo[i][f_enz]))continue;
-	SetPlayerInterior(playerid,fInfo[i][f_inter]);
-	SetPlayerVirtualWorld(playerid,fInfo[i][f_world]);
-	SetPlayerPos(playerid,fInfo[i][f_exx],fInfo[i][f_exy],fInfo[i][f_exz]);
+	if(!IsPlayerInRangeOfPoint(playerid,10,fbase[i][f_enterx],fbase[i][f_entery],fbase[i][f_enterz]))continue;
+	SetPlayerInterior(playerid,fbase[i][f_inter]);
+	SetPlayerVirtualWorld(playerid,fbase[i][f_world]);
+	SetPlayerPos(playerid,fbase[i][f_exitx],fbase[i][f_exity],fbase[i][f_exitz]);
 	}
 
 	for(new i=0; i<sizeof(hInfo); i++)
@@ -5685,6 +5757,7 @@ cache_get_value_name_int(i,"f2",cInfo[id][farbe2]);
 cache_get_value_name_float(i,"dl",cInfo[id][dl]);
 cache_get_value_name(i,"Kennzeichen",cInfo[id][kennzeichen],128);
 cache_get_value_name_int(i,"tank",tank[id]);
+cInfo[id][abgeschlossen]=1;
 cInfo[id][id_x]=CreateVehicle(cInfo[id][model],cInfo[id][c_x],cInfo[id][c_y],cInfo[id][c_z],cInfo[id][c_r],cInfo[id][farbe1],cInfo[id][farbe2],-1);
 	}
 	return 1;
