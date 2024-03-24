@@ -83,7 +83,7 @@
 #define SERVERTAG  Testserver
 #define COLOR_RCHAT 0x0093FFFF
 //#define Weihnachten
-//#define SERVERPAS
+#define SERVERPAS
 #define SERVEROWNER Ioannis
 
 
@@ -104,17 +104,19 @@
 #define DIALOG_SEIGABE 13
 #define DIALOG_KICK 14
 #define DIALOG_FCARRD 15
+#define DIALOG_TRADE 16
 
 
 //MySQL
 #define DB_HOST "127.0.0.1"
 #define DB_USER "samp"
-#define DB_PASS "password"
+#define DB_PASS "Kokoras_12!!"
 #define DB_DB "samp"
 
 //Limits
 #define CHAT_RADIUS 40
 #define CHAT_FADES 5
+#define MAX_PLAYER_CARS 5
 
 //enums
 enum playerInfo{
@@ -143,7 +145,8 @@ enum playerInfo{
 	smoney,
 	wanteds,
 	login[128],
-	logout[128]
+	logout[128],
+	pfahrzeuge[MAX_PLAYER_CARS]
 }
 
 enum hausEnum{
@@ -294,11 +297,11 @@ enum jobEnum{
 //Globale Variablen
 new restartcounter;
 new weatherdone;
-new MAX_FRAKS=0;
+#define MAX_FRAKS 18
 new sekunden_timer;
 new weatherids[20]= {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
 new sInfo[MAX_PLAYERS][playerInfo];
-new hInfo[100][hausEnum];
+new hInfo[69][hausEnum];
 new pVCam[MAX_PLAYERS] = {-1, ...};
 new autosOhneMotor[] = {509,510,481};
 new Text:uhrzeitlabel;
@@ -327,8 +330,6 @@ new p1,p2,p3,pdschranke,pdtor;
 
 //noclip
 new noclipdata[MAX_PLAYERS][noclipenum];
-
-
 /*new fInfo[MAX_FRAKS][frakenum] = {
 {0,"Zivilisten",0.0,0.0,0.0,0.0,0,0,COLOR_WHITE,0.0,0.0,0.0},
 {1,"San Andreas Police Department",197.2779,165.4692,1003.0234,0.0,3,0,COLOR_BLUE,197.875259,166.845626,1003.023437,1554.9139,-1675.6171,16.1953,288.7386,167.5315,1007.1719},
@@ -358,7 +359,7 @@ new noclipdata[MAX_PLAYERS][noclipenum];
 new bInfo[][buildingsenum] ={
 {243.0825,-178.3224,1.5822,285.3642,-41.5576,1001.5156,1,"Ammu Nation Blueberry"},//Ammu Nation 1
 {212.1142,-202.1886,1.5781,372.4523,-133.5244,1001.4922,5,"Pizza Stack Blueberry"},//Pizza
-{2351.604980,-1412.101928,23.992372,-2240.964355,128.358978,1035.414062,6,"IKEA Mï¿½belhaus"},//IKEA
+{2351.604980,-1412.101928,23.992372,-2240.964355,128.358978,1035.414062,6,"IKEA Möbelhaus"},//IKEA
 {2244.4851,-1665.1661,15.4766,207.737991,-109.019996,1005.132812,15,"BINCO GS"}//Binco GS
 };
 
@@ -612,20 +613,19 @@ public OnFraksLoad()
         cache_get_value_name_int(i,"LSD",fInfo[i][f_lsd]);
         cache_get_value_name_int(i,"Green",fInfo[i][f_green]);
         cache_get_value_name(i,"FMOTD",fInfo[i][fmotd],128);
-        cache_get_value_name(i,"rang0",fInfo[i][rangnull],128);
-        cache_get_value_name(i,"rang1",fInfo[i][rangeins],128);
-        cache_get_value_name(i,"rang2",fInfo[i][rangzwei],128);
-        cache_get_value_name(i,"rang3",fInfo[i][rangdrei],128);
-        cache_get_value_name(i,"rang4",fInfo[i][rangvier],128);
-        cache_get_value_name(i,"rang5",fInfo[i][rangfunf],128);
-        cache_get_value_name(i,"rang6",fInfo[i][rangsechs],128);
+        cache_get_value_name(i,"rang0",fInfo[i][rangnull],75);
+        cache_get_value_name(i,"rang1",fInfo[i][rangeins],75);
+        cache_get_value_name(i,"rang2",fInfo[i][rangzwei],75);
+        cache_get_value_name(i,"rang3",fInfo[i][rangdrei],75);
+        cache_get_value_name(i,"rang4",fInfo[i][rangvier],75);
+        cache_get_value_name(i,"rang5",fInfo[i][rangfunf],75);
+        cache_get_value_name(i,"rang6",fInfo[i][rangsechs],75);
         cache_get_value_name_int(i,"ep",fInfo[i][ep]);
  		CreatePickup(1239,1,fbase[i][f_dutyx],fbase[i][f_dutyy],fbase[i][f_dutyz],0);
     	CreatePickup(1239,1,fbase[i][f_enterx],fbase[i][f_entery],fbase[i][f_enterz],0);
     	CreatePickup(1239,1,fbase[i][f_exitx],fbase[i][f_exity],fbase[i][f_exitz],0);
    		format(string,sizeof(string),"Fraktion: %s wurde Geladen",fInfo[i][f_name]);
 		printf(string);
-		MAX_FRAKS++;
 	}
 	return 1;
 }
@@ -638,15 +638,15 @@ stock loadsamagcars()
 	new g_Object[20];
 	g_Object[0] = CreateDynamicObject(1182, 1136.3664, -1452.6457, 15.7966, 0.0000, 0.0000, 0.0000); //fbmp_lr_bl1
 	g_Object[1] = CreateDynamicObject(19329, 1128.4628, -1454.4420, 16.3468, 0.0000, 0.0000, 272.9024); //7_11_sign04
-	SetObjectMaterialText(g_Object[1], "Media AG", 0, OBJECT_MATERIAL_SIZE_256x128, "Arial", 35, 1, 0xFF000000, 0x00000000, 0);
+	//SetObjectMaterialText(g_Object[1], "Media AG", 0, OBJECT_MATERIAL_SIZE_256x128, "Arial", 35, 1, 0xFF000000, 0x00000000, 0);
 	g_Object[2] = CreateDynamicObject(19329, 1128.8304, -1457.3471, 15.9668, 0.0000, 0.0000, 272.9024); //7_11_sign04
-	SetObjectMaterialText(g_Object[2], "San Andreas", 0, OBJECT_MATERIAL_SIZE_256x128, "Arial", 35, 1, 0xFF000000, 0x00000000, 1);
+	//SetObjectMaterialText(g_Object[2], "San Andreas", 0, OBJECT_MATERIAL_SIZE_256x128, "Arial", 35, 1, 0xFF000000, 0x00000000, 1);
 	g_Object[3] = CreateDynamicObject(19329, 1128.3026, -1453.0086, 16.2503, 0.0000, 0.0000, 273.8342); //7_11_sign04
-	SetObjectMaterialText(g_Object[3], "Media AG", 0, OBJECT_MATERIAL_SIZE_256x128, "Arial", 35, 1, 0xFF000000, 0x00000000, 1);
+	//SetObjectMaterialText(g_Object[3], "Media AG", 0, OBJECT_MATERIAL_SIZE_256x128, "Arial", 35, 1, 0xFF000000, 0x00000000, 1);
 	g_Object[4] = CreateDynamicObject(19329, 1125.7767, -1454.8016, 16.2503, 0.0000, 0.0000, 273.8342); //7_11_sign04
-	SetObjectMaterialText(g_Object[4], "San Andreas", 0, OBJECT_MATERIAL_SIZE_256x128, "Arial", 35, 1, 0xFF000000, 0x00000000, 1);
+	//SetObjectMaterialText(g_Object[4], "San Andreas", 0, OBJECT_MATERIAL_SIZE_256x128, "Arial", 35, 1, 0xFF000000, 0x00000000, 1);
 	g_Object[5] = CreateDynamicObject(19329, 1125.7127, -1453.3839, 16.2112, 0.0000, 0.0000, 273.4313); //7_11_sign04
-	SetObjectMaterialText(g_Object[5], "We Are Watching You",1, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 1, 0xFF000000, 0x00000000, 1);
+	//SetObjectMaterialText(g_Object[5], "We Are Watching You",1, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 1, 0xFF000000, 0x00000000, 1);
 	g_Object[6] = CreateDynamicObject(3031, 1141.5068, -1453.3382, 15.7966, 0.0000, 0.0000, 0.0000); //wong_dish
 	g_Object[7] = CreateDynamicObject(19329, 1128.5977, -1457.8817, 16.2807, 0.0000, 0.0000, 453.0983); //7_11_sign04
 	SetObjectMaterial(g_Object[7], 0, 16640, "a51", "banding3_64HV", 0xFF696969);
@@ -667,7 +667,7 @@ stock loadsamagcars()
 	g_Object[18] = CreateDynamicObject(19329, 1125.9306, -1458.0455, 16.4503, 0.0000, 0.0000, 453.0250); //7_11_sign04
 	SetObjectMaterial(g_Object[18], 0, 3083, "billbox", "Sprunk_postersign1", 0xFF696969);
 	g_Object[19] = CreateDynamicObject(19329, 1127.6734, -1462.8236, 17.3103, 0.0000, 0.0000, 183.8850); //7_11_sign04
-	SetObjectMaterialText(g_Object[19], "San Andreas Media AG", 0, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 1, 0xFF8B4513, 0x00000000, 0);*/
+	//SetObjectMaterialText(g_Object[19], "San Andreas Media AG", 0, OBJECT_MATERIAL_SIZE_256x128, "Arial", 24, 1, 0xFF8B4513, 0x00000000, 0);*/
 	SAMAGCARS[1]=AddStaticVehicle(582,-1965.0427,497.0664,35.2084,90.5399,6,0);
 	SAMAGCARS[2]=AddStaticVehicle(582,-1970.0906,491.2776,35.2076,90.5399,6,0); // news2
 	SAMAGCARS[3]=AddStaticVehicle(582,-1970.0958,483.8952,35.2057,90.5399,6,0); // news3
@@ -724,12 +724,13 @@ stock loadsamagcars()
 }
 public savefraks()
 {
-	for(new i = 0; i<MAX_FRAKS;i++)
+	for(new i = 0; i<=MAX_FRAKS;i++)
 	{
   	new query[2048];
 	mysql_format(dbhandle,query,sizeof(query),"UPDATE fraktionen SET Bank='%i',Green='%i',Gold='%i',LSD='%i',FMOTD='%s', ep='%i' WHERE id='%i'",
 	fInfo[i][f_kasse],fInfo[i][f_green],fInfo[i][f_gold],fInfo[i][f_lsd],fInfo[i][fmotd],fInfo[i][ep],fInfo[i][f_ID]);
 	mysql_tquery(dbhandle,query);
+	print(query);
 
 	}
 	return 1;
@@ -753,9 +754,9 @@ return 0;
 
 public OnGameModeInit()
 {
-mysql_log(DEBUG);
+mysql_log(ALL);
  #if defined SERVERPAS
- SendRconCommand("password  Ioannis");
+ SendRconCommand("password  nesCUiwl");
  #endif
  
  #if defined Weihnachten
@@ -839,6 +840,8 @@ mysql_log(DEBUG);
 	TextDrawSetOutline(uhrzeitlabel, 1);
 	TextDrawSetProportional(uhrzeitlabel, true);
 
+	
+	
 	for(new i=0; i<sizeof(tank); i++)
 	{
 		tank[i]=100;
@@ -847,6 +850,7 @@ mysql_log(DEBUG);
 	loadsamagcars();
 	LoadAdminCars();
 	loadJobs();
+	GangZoneCreate(1248.011, 2072.804, 1439.348, 2204.319);
 	//Mapping
 	p1 = CreateDynamicObject(1215, 371.16800, -2038.30005, 7.24000,   0.00000, 0.00000, 0.00000);
 	p2 = CreateDynamicObject(1215, 369.82370, -2038.30005, 7.24000,   0.00000, 0.00000, 0.00000);
@@ -862,9 +866,13 @@ mysql_log(DEBUG);
 	SetWorldTime(hour);
 	
 			//FRAKS zählen
-	new mfstring[16];
+	new mfstring[19];
 	format(mfstring,sizeof(mfstring),"MF: %i",MAX_FRAKS);
 	printf(mfstring);
+	
+	
+	
+
 	return 1;
 }
 
@@ -885,7 +893,7 @@ public OnHausesLoad()
   		cache_get_value_name_float(i,"ih_y",hInfo[id][ih_x]);
   		cache_get_value_name_float(i,"ih_z",hInfo[id][ih_x]);
 		cache_get_value_name_int(i,"h_interior",hInfo[id][h_interior]);
-		new tmp_name[MAX_PLAYER_NAME];
+		new tmp_name[128];
 		cache_get_value_name(i,"besitzer",tmp_name,128);
 		strmid(hInfo[id][h_besitzer], tmp_name, 0, sizeof(tmp_name), sizeof(tmp_name));
 		cache_get_value_name_int(i,"id",hInfo[id][h_id]);
@@ -933,7 +941,9 @@ updateHaus(id)
 public OnGameModeExit()
 {
 	savefraks();
+	print("SAVEFRAKS");
 	mysql_close(dbhandle);
+	print("UFFLINE");
 	return 1;
 }
 
@@ -1061,7 +1071,6 @@ public sekunde()
 			stopMotor(i);
 		}
  }
-
 	new hour,minute,second;
 	gettime(hour,minute,second);
 	format(string,sizeof(string),"%02d:%02d",hour,minute);
@@ -1070,7 +1079,7 @@ public sekunde()
 	SetWorldTime(hour);
 	return 1;
 	}
-	if(minute==10)
+	if(minute==10 && second == 12)
 	{
 	changeweather();
 	weatherdone=1;
@@ -1110,6 +1119,7 @@ CMD:weatherall(playerid,params[])
 	if(sscanf(params,"i",weather))return SendClientMessage(playerid,COLOR_GREY,"FEHLER: /weather [weatherid]");
 	if(weather < 0||weather > 45) { SendClientMessage(playerid, COLOR_GREY, "Die WetterID muss zwischen 0 und 45 liegen!"); return 1; }
 	changeweather();
+	CreateDynamicCP(playerid , 0, 0, 0, 5);
 	return 1;
 }
 //WETTER RANDOM
@@ -1226,10 +1236,13 @@ savePlayer(playerid)
 	mysql_format(dbhandle,query,sizeof(query),"UPDATE user SET level='%i',money='%i',adminlevel='%i',skin='%i',fraktion='%i',frang='%i',fleader='%i',fskin='%i',spawnchange='%s',x='%f',y='%f',z='%f',donut='%i', deaths='%i', orangelist='%i', green='%i', gold='%i', lsd='%i' WHERE id='%i'",
 	GetPlayerScore(playerid),GetPlayerMoney(playerid),sInfo[playerid][adminlevel],sInfo[playerid][skin],sInfo[playerid][fraktion],sInfo[playerid][frang],sInfo[playerid][fraktion],sInfo[playerid][fSkin],sInfo[playerid][spawnchange],sInfo[playerid][sx],sInfo[playerid][sy],sInfo[playerid][sz],sInfo[playerid][pdonut],sInfo[playerid][deaths],sInfo[playerid][pOL],sInfo[playerid][pgreen],sInfo[playerid][pgold],sInfo[playerid][plsd],sInfo[playerid][db_id]);
 	mysql_tquery(dbhandle,query);
+	print(query);
 	new lquery[1024];
 	mysql_format(dbhandle,lquery,sizeof(lquery),"INSERT INTO sessions (playerid, login, logout) VALUES ('%i', '%s', '%s')",sInfo[playerid][db_id], sInfo[playerid][login],sInfo[playerid][logout]);
 	mysql_tquery(dbhandle,lquery);
+	print(lquery);
 	sInfo[playerid][eingeloggt]=0;
+	print("SUFFLINE");
 	return 1;
 }
 
@@ -1602,7 +1615,7 @@ createCar(playerid,modelid,Float:x,Float:y,Float:z,Float:r)
 	{
 	    if(cInfo[i][id_x]!=0)continue;
 	    GetPlayerName(playerid,cInfo[i][besitzer],MAX_PLAYER_NAME);
-		cInfo[i][besitzer]=getPlayerName(playerid);
+		cInfo[i][besitzer]=sInfo[playerid][db_id];
 		cInfo[i][c_x]=x;
 	    cInfo[i][c_y]=y;
 	    cInfo[i][c_z]=z;
@@ -1836,7 +1849,7 @@ stock loadxmas()
 	xmas[12] = CreateDynamicObject(19845, 1301.2491, -1521.7274, 15.3779, 90.0000, 90.0000, 60.0000); //MetalPanel3
 	SetDynamicObjectMaterial(xmas[12], 0, 10765, "airportgnd_sfse", "white", 0xFF335F3F);
 	xmas[13] = CreateDynamicObject(19327, 1402.0705, -1732.3122, 20.4363, 0.0000, 0.0000, -90.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[13], 0, "Christ", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
+	//SetObjectMaterialText(xmas[13], "Christ", 0, 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
 	xmas[14] = CreateDynamicObject(19565, 1301.1295, -1521.6623, 14.4588, 0.0000, 90.0000, -30.0000); //IceCreamBarsBox1
 	SetDynamicObjectMaterial(xmas[14], 0, 10765, "airportgnd_sfse", "white", 0xFF221918);
 	xmas[15] = CreateDynamicObject(18761, 1402.1865, -1732.4271, 17.5337, 0.0000, 0.0000, 90.0000); //RaceFinishLine1
@@ -1844,9 +1857,9 @@ stock loadxmas()
 	SetDynamicObjectMaterial(xmas[15], 1, 10765, "airportgnd_sfse", "white", 0xFFFFFFFF);
 	SetDynamicObjectMaterial(xmas[15], 2, 11100, "bendytunnel_sfse", "blackmetal", 0xFFFFFFFF);
 	xmas[16] = CreateDynamicObject(19327, 1402.0705, -1729.9023, 20.4363, 0.0000, 0.0000, -90.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[16], 0,"Merry", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
+	//SetObjectMaterialText(xmas[16], 0,"Merry", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
 	xmas[17] = CreateDynamicObject(19327, 1402.0705, -1734.6628, 20.4363, 0.0000, 0.0000, -90.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[17], 0, "mas!", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
+	//SetObjectMaterialText(xmas[17], 0, "mas!", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
 	xmas[18] = CreateDynamicObject(19845, 1401.9930, -1739.3824, 21.1779, 90.0000, 90.0000, 0.0000); //MetalPanel3
 	SetDynamicObjectMaterial(xmas[18], 0, 10765, "airportgnd_sfse", "white", 0xFF335F3F);
 	xmas[19] = CreateDynamicObject(19845, 1401.9930, -1739.3824, 21.6079, 90.0000, 90.0000, 0.0000); //MetalPanel3
@@ -1860,11 +1873,11 @@ stock loadxmas()
 	xmas[23] = CreateDynamicObject(19845, 1402.8453, -1725.5019, 21.0379, 90.0000, 90.0000, 0.0000); //MetalPanel3
 	SetDynamicObjectMaterial(xmas[23], 0, 10765, "airportgnd_sfse", "white", 0xFF335F3F);
 	xmas[24] = CreateDynamicObject(19327, 1402.2108, -1734.6926, 20.4363, 0.0000, 0.0000, 90.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[24], 0, "Merry", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
+	//SetObjectMaterialText(xmas[24], "Merry",0, 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
 	xmas[25] = CreateDynamicObject(19327, 1402.2303, -1732.3122, 20.4363, 0.0000, 0.0000, 90.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[25], 0, "Christ", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
+	//SetObjectMaterialText(xmas[25], 0, "Christ", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
 	xmas[26] = CreateDynamicObject(19327, 1402.2004, -1729.9925, 20.4363, 0.0000, 0.0000, 90.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[26], 0,"mas!", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
+	//SetObjectMaterialText(xmas[26], 0,"mas!", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
 	xmas[27] = CreateDynamicObject(19565, 1722.2064, -1703.3266, 14.7089, 0.0000, 90.0000, 0.0000); //IceCreamBarsBox1
 	SetDynamicObjectMaterial(xmas[27], 0, 10765, "airportgnd_sfse", "white", 0xFF221918);
 	xmas[28] = CreateDynamicObject(19845, 1722.3242, -1703.3298, 15.5200, 90.0000, 0.0000, 0.0000); //MetalPanel3
@@ -1922,11 +1935,11 @@ stock loadxmas()
 	xmas[54] = CreateDynamicObject(19565, 279.8963, -1403.5731, 14.8184, 0.0000, 90.0000, 90.0000); //IceCreamBarsBox1
 	SetDynamicObjectMaterial(xmas[54], 0, 10765, "airportgnd_sfse", "white", 0xFF221918);
 	xmas[55] = CreateDynamicObject(19327, 1555.3913, -1734.6926, 20.4363, 0.0000, 0.0000, 90.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[55], 0,"Merry", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
+	//SetObjectMaterialText(xmas[55], 0,"Merry", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
 	xmas[56] = CreateDynamicObject(19327, 1555.3797, -1732.3122, 20.4363, 0.0000, 0.0000, 90.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[56], 0,"Christ", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
+	//SetObjectMaterialText(xmas[56], 0,"Christ", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
 	xmas[57] = CreateDynamicObject(19327, 1555.3708, -1729.9925, 20.4363, 0.0000, 0.0000, 90.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[57], 0,"mas!", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
+	//SetObjectMaterialText(xmas[57], 0,"mas!", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
 	xmas[58] = CreateDynamicObject(19845, 1555.4156, -1725.5019, 21.5477, 90.0000, 90.0000, 0.0000); //MetalPanel3
 	SetDynamicObjectMaterial(xmas[58], 0, 10765, "airportgnd_sfse", "white", 0xFF335F3F);
 	xmas[59] = CreateDynamicObject(19845, 1555.4156, -1725.5019, 21.0576, 90.0000, 90.0000, 0.0000); //MetalPanel3
@@ -1934,11 +1947,11 @@ stock loadxmas()
 	xmas[60] = CreateDynamicObject(19565, 1555.4062, -1725.6623, 20.5277, 0.0000, 90.0000, 90.0000); //IceCreamBarsBox1
 	SetDynamicObjectMaterial(xmas[60], 0, 10765, "airportgnd_sfse", "white", 0xFF221918);
 	xmas[61] = CreateDynamicObject(19327, 1555.2994, -1729.9023, 20.4363, 0.0000, 0.0000, -90.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[61], 0,"Merry", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
+	//SetObjectMaterialText(xmas[61], 0,"Merry", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
 	xmas[62] = CreateDynamicObject(19327, 1555.3205, -1732.3122, 20.4363, 0.0000, 0.0000, -90.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[62], 0,"Christ", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
+	//SetObjectMaterialText(xmas[62], 0,"Christ", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
 	xmas[63] = CreateDynamicObject(19327, 1555.3496, -1734.6628, 20.4363, 0.0000, 0.0000, -90.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[63], 0,"mas!", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
+	//SetObjectMaterialText(xmas[63], 0,"mas!", 90, "Arial", 100, 1, 0xFFFFFFFF, 0x0, 0);
 	xmas[64] = CreateDynamicObject(19845, 1555.2629, -1739.3824, 21.6277, 90.0000, 90.0000, 0.0000); //MetalPanel3
 	SetDynamicObjectMaterial(xmas[64], 0, 10765, "airportgnd_sfse", "white", 0xFF335F3F);
 	xmas[65] = CreateDynamicObject(654, 1479.0620, -1677.5168, 12.1716, 0.0000, 0.0000, 0.0000); //pinetree08
@@ -2257,51 +2270,51 @@ stock loadxmas()
 	xmas[236] = CreateDynamicObject(19377, 1468.4576, -1610.8851, 12.9947, 0.0000, 90.0000, 90.0000); //wall025
 	SetDynamicObjectMaterial(xmas[236], 0, 3922, "bistro", "mp_snow", 0xFFFFFFFF);
 	xmas[237] = CreateDynamicObject(19327, 1480.1090, -1614.4090, 15.9235, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[237], 0, "1",90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[237], 0, "1",90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[238] = CreateDynamicObject(19327, 1474.8282, -1614.4090, 16.3136, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[238], 0, "2",90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[238], 0, "2",90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[239] = CreateDynamicObject(19327, 1478.4384, -1614.4090, 17.3635, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[239], 0, "3",90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[239], 0, "3",90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[240] = CreateDynamicObject(19327, 1477.0183, -1614.4090, 21.9936, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[240], 0,"4", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[240], 0,"4", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[241] = CreateDynamicObject(19327, 1481.7486, -1614.4090, 20.4036, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[241], 0,"5", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[241], 0,"5", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[242] = CreateDynamicObject(19327, 1476.9980, -1614.4090, 13.8936, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[242], 0, "6",90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[242], 0, "6",90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[243] = CreateDynamicObject(19327, 1476.9980, -1614.4090, 19.4335, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[243], 0, "7",90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[243], 0, "7",90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[244] = CreateDynamicObject(19327, 1481.8083, -1614.4090, 17.4535, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[244], 0,"8", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[244], 0,"8", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[245] = CreateDynamicObject(19327, 1479.8880, -1614.4090, 22.0135, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[245], 0, "9", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[245], 0, "9", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[246] = CreateDynamicObject(19327, 1477.3676, -1614.4090, 20.7136, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[246], 0, "10", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[246], 0, "10", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[247] = CreateDynamicObject(19327, 1477.2977, -1614.4090, 15.1436, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[247], 0, "11", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[247], 0, "11", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[248] = CreateDynamicObject(19327, 1482.1080, -1614.4090, 15.9135, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[248], 0, "12", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[248], 0, "12", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[249] = CreateDynamicObject(19327, 1478.8280, -1614.4090, 18.6935, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[249], 0, "13", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[249], 0, "13", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[250] = CreateDynamicObject(19327, 1475.1176, -1614.4090, 15.1035, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[250], 0, "14", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[250], 0, "14", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[251] = CreateDynamicObject(19327, 1478.7690, -1614.4090, 15.8836, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[251], 0, "15", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[251], 0, "15", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[252] = CreateDynamicObject(19327, 1480.2695, -1614.4090, 20.7236, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[252], 0,"16", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[252], 0,"16", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[253] = CreateDynamicObject(19327, 1477.2691, -1614.4090, 16.3236, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[253], 0, "17",90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[253], 0, "17",90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[254] = CreateDynamicObject(19327, 1482.0594, -1614.4090, 21.8335, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[254], 0,"18", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[254], 0,"18", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[255] = CreateDynamicObject(19327, 1475.7381, -1614.4090, 13.8635, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[255], 0,"19", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[255], 0,"19", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[256] = CreateDynamicObject(19327, 1477.1384, -1614.4090, 17.5335, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[256], 0,"21", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[256], 0,"21", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[257] = CreateDynamicObject(19327, 1482.0290, -1614.4090, 18.9136, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[257], 0,"20", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[257], 0,"20", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[258] = CreateDynamicObject(19327, 1480.2186, -1614.4090, 19.4136, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[258], 0,"22", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[258], 0,"22", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[259] = CreateDynamicObject(19327, 1475.7686, -1614.4090, 17.5536, 0.0000, 0.0000, 180.0000); //7_11_sign02
-	SetObjectMaterialText(xmas[259], 0,"23", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
+	//SetObjectMaterialText(xmas[259], 0,"23", 90, "Arial", 130, 1, 0xFF840410, 0x0, 0);
 	xmas[260] = CreateDynamicObject(889, 1489.1053, -1614.4376, 12.9504, 0.0000, 0.0000, 0.0000); //Pinebg_PO
 	xmas[261] = CreateDynamicObject(889, 1474.5759, -1614.1474, 6.3804, 0.0000, 0.0000, 180.0000); //Pinebg_PO
 	SetDynamicObjectMaterial(xmas[261], 0, 0, "INVALID", "INVALID", 0xFFFFFFFF);
@@ -2331,11 +2344,39 @@ stock loadxmas()
 	return 1;
 }
 //Adminbefehle
+CMD:delallveh(playerid,params[]){
+	if(!isAdmin(playerid,5))return SEM(playerid,"Du bist kein Admin/dein Adminrang ist zu niedrig.");
+	for(new i=0;i<=GetVehiclePoolSize();i++){
+	if(IsValidVehicle(i)){
+		DestroyVehicle(i);
+		}
+	}
+	return 1;
+}
 
+CMD:w(playerid,params[]){
+	new nachricht[256],string[256],pID;
+	if(!isAdmin(playerid,2))return SendClientMessage(playerid,COLOR_GREY,"Du bist kein "#SERVERTAG" Mitglied!");
+	if(sscanf(params,"u,s[256]",pID, nachricht))return WPM(playerid,"/w [nachricht]");
+	format(string,sizeof(string)," %s flüstert dir: %s ",getPlayerName(playerid),nachricht);
+	SendClientMessage(pID,COLOR_YELLOW,string);
+	return 1;
+}
+CMD:reloadxmas(playerid,params[])
+{
+	if(!isAdmin(playerid,5))return SEM(playerid,"Du bist kein Admin/dein Adminrang ist zu niedrig.");
+	for(new i=0;i<=GetVehiclePoolSize();i++){
+	if(IsValidVehicle(i)){
+		DestroyVehicle(i);
+		}
+	}
+	SendRconCommand("reloadfs dilemma");
+	return 1;
+}
 CMD:showservervehs(playerid,params[]){
 	new string[64];
 	if(!isAdmin(playerid,5))return SEM(playerid,"Du bist kein Admin/dein Adminrang ist zu niedrig.");
-	format(string,sizeof(string),"Auf dem Server befinden sich %i Fahrzeuge.ä#",GetVehiclePoolSize());
+	format(string,sizeof(string),"Auf dem Server befinden sich %i Fahrzeuge.",GetVehiclePoolSize());
 	SendClientMessage(playerid,COLOR_GREY,string);
 	return 1;
 }
@@ -2534,7 +2575,7 @@ if(!strcmp(thing,"LSD",false))
 	SendClientMessage(playerid,COLOR_YELLOW,string);
 	return 1;
 }
-return 0;
+return 1;
 }
 
 CMD:gotoxyz(playerid,params[])
@@ -3080,7 +3121,7 @@ CMD:gohouse(playerid,params[])
 CMD:goto(playerid,params[])
 {
 	new pID, Float:x,Float:y,Float:z, adminstring[128],str[256],sint,sworld;
-    //if(!isAdmin(playerid,2))return SendClientMessage(playerid,COLOR_GREY,"Du bist kein "#SERVERTAG" Mitglied!");
+    if(!isAdmin(playerid,2))return SendClientMessage(playerid,COLOR_GREY,"Du bist kein "#SERVERTAG" Mitglied!");
     if(!isaduty(playerid))return SendClientMessage(playerid, COLOR_RED,"SERVER: {FFFFFF}Du bist nicht berechtigt diesen Befehl zu nutzen.");
     if(sscanf(params,"u",pID))return WPM(playerid,"/goto [playerid]");
 	if(!IsPlayerConnected(pID)) return SendClientMessage(playerid, COLOR_GREY, "Diese Person ist nicht online/du kannst dich nicht zu dir selber teleportieren.");
@@ -3203,7 +3244,7 @@ else if(isAlevel(playerid, 6)&& !isaduty(playerid)){
 	return 1;
 }
 
-else if(isaduty(playerid)){
+else if(isaduty(playerid)&& !isAdmin(playerid,5)){
 SetPlayerColor(playerid, 0xFFFFFFFF);
 GetPlayerName(playerid, name, sizeof(name));
 format(string, sizeof(string), "SERVER: %s {FFFFFF}ist nun nicht mehr im Dienst.", name);
@@ -3494,23 +3535,16 @@ CMD:car(playerid,params[])
 	if(strcmp(option,"lock",false)==0)
 {
     new Float:vx, Float:vy, Float:vz;
-    for (new i = 0; i <= GetVehiclePoolSize(); i++)
+    for (new i = 0; i <= MAX_PLAYER_CARS; i++)
     {
-
-        GetVehiclePos(i, vx, vy, vz);
-        if (IsPlayerInRangeOfPoint(playerid, 10.0, vx, vy, vz))
-        {
-			SetPlayerPos(playerid,vx,vy,vz);
+		new string[64];
+		GetVehiclePos(i,vx,vy,vz);
+		if(IsPlayerInRangeOfPoint(playerid,5.0,vx,vy,vz)){
+			format(string,sizeof(string),"%i",sInfo[playerid][pfahrzeuge][i]);
+			SCM(playerid, COLOR_BLUE,string);
 			return 1;
-        }else{
-            return SEM(playerid, "Du bist nicht in der Nähe eines Fahrzeuges!");
 		}
-
-        if (!(cInfo[i][besitzer] == sInfo[playerid][db_id]))
-        {
-            return SEM(playerid, "Du bist nicht in der Nähe deiner Fahrzeuge!");
-        }
-
+		return 0;
     }
     printf("Kein gültiges Fahrzeug gefunden!");
     return 1;
@@ -3574,7 +3608,7 @@ CMD:vehicles(playerid,params[])
 new string[256];
 SendClientMessage(playerid,COLOR_HBLUE,"[______________Fahrzeugübersicht______________]");
 for(new i=0;i<=GetVehiclePoolSize();i++){
-	if(strcmp(cInfo[i][besitzer],getPlayerName(playerid))==0){
+	if(strcmp(cInfo[i][besitzer],getPlayerName(playerid))>=0){
 	format(string,sizeof(string),"ID: %i | Model: %s | Tank:%i",i,getVehicleName(i),tank[i]);
 	SendClientMessage(playerid,COLOR_WHITE,string);
 		}
@@ -3889,7 +3923,13 @@ CMD:suspend(playerid,params[])
 	return 0;
 }
 
-
+//swtest
+CMD:swtest(playerid,params[]){
+	new string[64];
+	new pvar = GetPVarInt(playerid,"swapgun");
+	format(string,sizeof(string),"SwapGun: %i  GetPWEP: %i",pvar,GetPlayerWeapon(playerid));
+	SendClientMessageToAll(COLOR_RED,string);
+}
 /*
 //Duty
 CMD:duty(playerid,params[])
@@ -4275,7 +4315,7 @@ CMD:use(playerid,params[])
 	new item[64],string[256],Float:health;
 	if(sscanf(params,"s[64]",item))return WPM(playerid,"/use [lsd|green|gold|donut]");
 	//donut
-	if(!strcmp(item, "donut", false))
+	if(!strcmp(item,"donut", false))
 	{
 	if(sInfo[playerid][pdonut] <= 0)return SendClientMessage(playerid, COLOR_RED,"FEHLER: {FFFFFF}Du besitzt keine Donuts.");
     new Float:x, Float:y, Float:z;
@@ -4940,7 +4980,7 @@ if(!strcmp(item,"mhaube",false))
 		SendClientMessage(playerid,COLOR_GREY,"INFO: Motohaube geschlossen.");
 		}else{
 		tmp_bonnet = 1;
-		SendClientMessage(playerid,COLOR_GREY,"INFO: Motorhaube geï¿½ffnet.");
+		SendClientMessage(playerid,COLOR_GREY,"INFO: Motorhaube geöffnet.");
 		}
 	SetVehicleParamsEx(vID,tmp_engine, tmp_lights, tmp_alarm, tmp_doors, tmp_bonnet, tmp_boot, tmp_objective);
 
@@ -5180,7 +5220,6 @@ return 0;
 
 public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger)
 {
-
 	return 1;
 }
 
@@ -5278,7 +5317,7 @@ public OnPlayerEnterCheckpoint(playerid)
 {
 if(GetPVarInt(playerid, "trash_job"))
 	{
-	    //Wenn trash job ausgefï¿½hrt wird
+	    //Wenn trash job ausgeführt wird
 		new cID = GetPVarInt(playerid, "trash_cp");
 		if(IsPlayerInRangeOfPoint(playerid, 5, tCPs[cID][t_x], tCPs[cID][t_y], tCPs[cID][t_z]))
 		{
@@ -5760,6 +5799,7 @@ public OnPlayerCarsLoad(playerid)
 	for(new i=0; i<num_rows; i++)
 	{
 new id=getFreeCarID();
+sInfo[playerid][pfahrzeuge] = sInfo[playerid][pfahrzeuge] += id;
 cache_get_value_name_int(i,"model",cInfo[id][model]);
 cache_get_value_name_int(i,"besitzer",cInfo[id][besitzer]);
 cache_get_value_name_float(i,"x",cInfo[id][c_x]);
@@ -6111,6 +6151,10 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		gNetStatsPlayerId = INVALID_PLAYER_ID;
 		return 1;
 	}
+	
+	
+	
+	
 	if(dialogid==DIALOG_ASPAWN)
 	{
 		new string[128];
@@ -6214,6 +6258,26 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	else{
 	SendClientMessage(playerid,COLOR_RED,"FEHLER: Vorgang abgebrochen!");}
 		}
+		
+	if(dialogid==DIALOG_TRADE)
+	{
+		if(response)
+		{
+			if(listitem==0)
+			{
+                ShowPlayerDialog(playerid, 19, DIALOG_STYLE_INPUT, "Nova e-Sports Börse", "Trage den Preis ein für den du Aktien kaufen willst:", "Kaufen", "Abbrechen");
+			}
+			if(listitem==1)
+			{
+                ShowPlayerDialog(playerid, 20, DIALOG_STYLE_INPUT, "Nova e-Sports Börse", "Trage den Preis ein für den du Aktien kaufen willst:", "Kaufen", "Abbrechen");
+			}
+
+		}
+
+
+	}
+		
+		
 	if(dialogid==DIALOG_TP)
 	{
 	    if(response)
@@ -6278,6 +6342,12 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		return 1;
 	}
 
+	return 1;
+}
+
+CMD:trade(playerid,params[])
+{
+    ShowPlayerDialog(playerid, DIALOG_TRADE, DIALOG_STYLE_LIST, "Caption", "Item 0\n{FFFF00}Item 1\nItem 2", "Button 1", "Button 2");
 	return 1;
 }
 CMD:nichts(playerid,params[])

@@ -156,6 +156,7 @@ CreateObject(970, 364.83090, -2038.30005, 7.38000,   0.00000, 0.00000, 0.00000);
 CreateObject(970, 374.51849, -2038.30005, 7.38000,   0.00000, 0.00000, 0.00000);
 CreateObject(1215, 361.34109, -2038.30005, 7.38000,   0.00000, 0.00000, 0.00000);
 CreateObject(1215, 378.30801, -2038.30005, 7.38000,   0.00000, 0.00000, 0.00000);
+CreateObject(3816, 2108.20898, -2409.47681, 19.53530,   0.00000, 0.00000, 0.00000);
 
 //Newsvan
 CreateDynamicObject(16155,-218.41751098633,1412.0537109375,28.464504241943,0,0,285.24597167969);
@@ -205,6 +206,11 @@ RemoveBuildingForPlayer(playerid, 1412, 1996.8281, -2227.3828, 13.7891, 0.25);
 RemoveBuildingForPlayer(playerid, 1412, 1991.5547, -2227.4141, 13.7578, 0.25);
 RemoveBuildingForPlayer(playerid, 1412, 1986.2813, -2227.4141, 13.7578, 0.25);
 RemoveBuildingForPlayer(playerid, 1412, 2002.1094, -2227.3438, 13.8281, 0.25);
+RemoveBuildingForPlayer(playerid, 3672, 2112.9375, -2384.6172, 18.8828, 0.25);
+RemoveBuildingForPlayer(playerid, 3629, 2112.9375, -2384.6172, 18.8828, 0.25);
+RemoveBuildingForPlayer(playerid, 3672, 2112.9375, -2384.6172, 18.8828, 0.25);
+RemoveBuildingForPlayer(playerid, 3629, 2112.9375, -2384.6172, 18.8828, 0.25);
+
 //Pier
 RemoveBuildingForPlayer(playerid, 6463, 389.7734, -2028.4688, 19.8047, 0.25);
 RemoveBuildingForPlayer(playerid, 6464, 379.0625, -2065.0234, 11.7969, 0.25);
@@ -261,6 +267,8 @@ RemoveBuildingForPlayer(playerid, 1308, 400.7578, -2050.4844, 6.5938, 0.25);
 RemoveBuildingForPlayer(playerid, 10938, -1909.5547, 497.2188, 25.7109, 0.25);
 RemoveBuildingForPlayer(playerid, 11144, -1909.5547, 497.2188, 25.7109, 0.25);
 
+RemoveBuildingForPlayer(playerid, 3672, 2112.9375, -2384.6172, 18.8828, 0.25);
+RemoveBuildingForPlayer(playerid, 3629, 2112.9375, -2384.6172, 18.8828, 0.25);
 
 //LS PARK
 RemoveBuildingForPlayer(playerid, 4057, 1479.5547, -1693.1406, 19.5781, 0.25);

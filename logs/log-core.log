@@ -1,0 +1,5 @@
+[15:50:18] [ERROR] exception 0XC0000094 (INTEGER_DIVIDE_BY_ZERO) from Vectored Exception Handler catched; shutting log-core down
+[15:53:55] [ERROR] exception 0XC0000094 (INTEGER_DIVIDE_BY_ZERO) from Vectored Exception Handler catched; shutting log-core down
+[16:00:35] [ERROR] exception 0XC0000094 (INTEGER_DIVIDE_BY_ZERO) from Vectored Exception Handler catched; shutting log-core down
+[16:02:26] [ERROR] exception 0XC0000094 (INTEGER_DIVIDE_BY_ZERO) from Vectored Exception Handler catched; shutting log-core down
+[16:04:45] [ERROR] exception 0XC0000094 (INTEGER_DIVIDE_BY_ZERO) from Vectored Exception Handler catched; shutting log-core down

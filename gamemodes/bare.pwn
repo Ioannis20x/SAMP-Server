@@ -25,7 +25,7 @@ public OnPlayerCommandText(playerid, cmdtext[])
 	cmd = strtok(cmdtext, idx);
 
 	if(strcmp(cmd, "/yadayada", true) == 0) {
-    	return 1;
+		SetPlayerPos(playerid, -1814.5582, 904.7863, 24.8906);
 	}
 
 	return 0;
@@ -46,7 +46,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 SetupPlayerForClassSelection(playerid)
 {
  	SetPlayerInterior(playerid,14);
-	SetPlayerPos(playerid,258.4893,-41.4008,1002.0234);
+	SetPlayerPos(playerid, -1814.5582, 904.7863, 24.8906);
 	SetPlayerFacingAngle(playerid, 270.0);
 	SetPlayerCameraPos(playerid,256.0815,-43.0475,1004.0234);
 	SetPlayerCameraLookAt(playerid,258.4893,-41.4008,1002.0234);
@@ -65,7 +65,7 @@ public OnGameModeInit()
 	ShowNameTags(1);
 	AllowAdminTeleport(1);
 
-	AddPlayerClass(265,1958.3783,1343.1572,15.3746,270.1425,0,0,0,0,-1,-1);
+	AddPlayerClass(265, -1814.5582, 904.7863, 24.8906,270.1425,0,0,0,0,-1,-1);
 
 	return 1;
 }
