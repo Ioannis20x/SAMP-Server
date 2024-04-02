@@ -1,0 +1,10 @@
+*.dll
+*.txt
+*.json
+/"Datenbank Backup 17.04.21"
+*.exe
+/Backup
+/.vscode
+./pawno
+./pawnfox
+./Planung
