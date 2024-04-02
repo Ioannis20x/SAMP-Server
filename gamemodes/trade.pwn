@@ -11,21 +11,20 @@
 
 
 #define MAX_POINTS 230
-#define MAX_AUTO 2
+#define MAX_AUTO 3
 #define DIALOG_TRADE 152
 #define DIALOG_BUY 153
 #define DIALOG_SELL 222
-
-new MAX_EXPS = 1.0425;
 
 new Text:TDEditor_PTD;
 
 enum pdata
 {
 	showing,
-	moneyput,
+	moneyput[MAX_AUTO],
  	Float:put,
- 	buy
+ 	buy[MAX_AUTO],
+ 	aktbiz
 }
 
 new pData[MAX_PLAYERS][pdata];
@@ -46,18 +45,14 @@ enum tradeenum{
 }
 
 new tradeautomat[MAX_AUTO][tradeenum]={
-{"Fastfood AG", -1814.5582, 904.7863, 24.8906, -1.00, 25, -0.444},
-{"SAM AG", 0, 0, 3, -5.00, 10, -0.0099}
-
-
+{"Fastfood AG", -1814.5582, 904.7863, 24.8906, -1.00, 26.55, -0.444},
+{"SAM AG", 1813.2036, 943.3578, 10.0, -5.00, 14.596, -0.0099},
+{"Donutfactory",192.0,168.0,15,0,45.854285,10.125469}
 };
 
 new Graph:MY_GRAPH;
 new pointData[MAX_AUTO][MAX_POINTS][pdta];
 
-new Float:IncDec[][1] = {
-	{1.045}, {2.042}, {-1.045}, {-2.042}, {1.234}, {-1.234}, {-0.124}, {0.124}
-};
 forward InitializeTD(str[]);
 public InitializeTD(str[])
 {
@@ -88,20 +83,19 @@ public InitializeBiz(){
 	return 1;
 }
 
-forward CreditsEzpz();
-
-
 public OnGameModeInit()
 {
- 	AddPlayerClass(0, 0, 1958.3783, 1343.1572, 15.3746, 0, 0, 0 ,0 , 0 ,0);
+ 	AddPlayerClass(250, 0, 1958.3783, 1343.1572, 15.3746, 0, 0, 0 ,0 , 0 ,0);
 	SetGameModeText("SNENS");
     InitializeTD("Nothing");
-    for(new i = 0; i < MAX_POINTS; i++)
-    {
-	    if(i == 0) pointData[1][i][val] = floatrandom(-5.0,5.0,6);
-	    else if(i == MAX_POINTS - 1) pointData[1][i][val] = pointData[1][i-1][val];
-	    else if(i > 150) pointData[1][i][val] = pointData[1][i-1][val] + 0.1;
-	    else pointData[1][i][val] = pointData[1][i-1][val] + floatrandom(0,1.0,2);
+    for(new j = 0; j<MAX_AUTO; j++){
+  	 	for(new i = 0; i < MAX_POINTS; i++)
+    	{
+	   	 	if(i == 0) pointData[j][i][val] = floatrandom(-5.0,15.0,6);
+	   		else if(i == MAX_POINTS - 1) pointData[j][i][val] = pointData[j][i-1][val];
+	    	else if(i > 150) pointData[j][i][val] = pointData[j][i-1][val] + 0.1;
+	    	else pointData[j][i][val] = pointData[j][i-1][val] + floatrandom(0,1.0,2);
+		}
 	}
     MY_GRAPH = GRAPHIC::Create(200.0, 250.0, 0, 0, 230, 230);
 	GRAPHIC::XYAxisColor(MY_GRAPH, 0x000000FF, 0x000000FF);
@@ -109,7 +103,7 @@ public OnGameModeInit()
 	GRAPHIC::UseBackground(MY_GRAPH, 1);
 	GRAPHIC::BackgroundColor(MY_GRAPH, 0x000000FF);
 
-    SetTimer("ChangeVals", 1500, true);
+    SetTimer("UpdateBizes", 60000, true);
 
     InitializeBiz();
     return 1;
@@ -173,7 +167,7 @@ native GRAPHIC::Destroy(Graph:_id);
 native GRAPHIC::OtherXYAxis(oper, playerid, Graph:_id, xAxis, yAxis);*/
 
 
-forward ChangeVals();/*
+forward ChangeVals(bizid);/*
 public ChangeVals()
 {
     GRAPHIC::RemoveTD(MAX_POINTS);
@@ -218,8 +212,20 @@ public ChangeVals()
 	}
 	GRAPHIC::ResetTD();
 }*/
+forward UpdateBizes();
+public UpdateBizes(){
+	new i = 0;
+	if(i<MAX_AUTO){
+	ChangeVals(i);
+	i++;
+	}
+	else {
+	i=0;
+	ChangeVals(i);
+	}
+}
 
-public ChangeVals(){
+public ChangeVals(bizid){
     GRAPHIC::RemoveTD(MAX_POINTS);
 	GRAPHIC::Destroy(MY_GRAPH);
     MY_GRAPH = GRAPHIC::Create(200.0, 250.0, 0, 0, 230, 230);
@@ -227,23 +233,26 @@ public ChangeVals(){
     GRAPHIC::UseBackground(MY_GRAPH, 1);
 	GRAPHIC::BackgroundColor(MY_GRAPH, 0x000000FF);
 	new Float:exps;
-	new Float:oldshit = pointData[1][MAX_POINTS-1][val];
+	new Float:oldshit = pointData[bizid][MAX_POINTS-1][val];
 	for(new i = 0; i < MAX_POINTS; i++)
 	{
-		exps = floatrandom(-12,5,4);
-	    if(i == MAX_POINTS - 1) pointData[1][i][val] = pointData[1][i][val] + exps;
-	    else pointData[1][i][val] = pointData[1][i+1][val];
+		exps = floatrandom(0.02566, 0.98553312354, 4);
+	    if(i == MAX_POINTS - 1) pointData[bizid][i][val] = pointData[bizid][i][val] + exps;
+	    else pointData[bizid][i][val] = pointData[bizid][i+1][val];
 	    if(i < 0 || i > MAX_POINTS-1) continue;
-	    GRAPHIC::AddPoint(MY_GRAPH, i,  pointData[1][i][val], 0xFFFFFFFF);
+	    printf(pointData[bizid][i][val]);
+	    GRAPHIC::AddPoint(MY_GRAPH, i,  pointData[bizid][i][val], 0xFFFFFFFF);
 	}
-
-	new Float:newshit = exps;
-	new Float:diff =  oldshit - newshit;
+	
+	new Float:newshit = pointData[bizid][MAX_POINTS - 1][val];
+	new Float:diff =  newshit - oldshit;
 	new mstr[256];
 	if(diff >= 0) format(mstr, 256, "      Neu: %f  		   Diff:~g~%f", newshit, diff);
 	else format(mstr, 256, "      Neu: %f     	   Diff:~r~%f", newshit, diff);
 	//TextDrawDestroy(TDEditor_PTD);
 	//InitializeTD(mstr);
+	tradeautomat[bizid][stand] = newshit;
+	tradeautomat[bizid][differenz] = diff;
 	TextDrawSetString(TDEditor_PTD, mstr);
 	for(new i = 0; i < MAX_PLAYERS; i++)
 	{
@@ -266,6 +275,14 @@ CMD:gmx(playerid,params[])
 {
 
 	SendRconCommand("gmx");
+	return 1;
+}
+
+CMD:gobiz(playerid,params[])
+{
+	new bID;
+	if(sscanf(params,"i",bID))return SendClientMessage(playerid,0,"FEHLER: /gotoxyz [x-pos] [y-pos] [zpos]");
+	SetPlayerPos(playerid,tradeautomat[bID][x],tradeautomat[bID][y],tradeautomat[bID][z]);
 	return 1;
 }
 
@@ -324,9 +341,10 @@ public OnPlayerActionStateChange(playerid, ACTION:newactions, ACTION:oldactions)
 {
 	if(newactions & KEY_NO){
 		for(new i=0;i<=MAX_AUTO;i++){
-			if(IsPlayerInRangeOfPoint(playerid,10,-1814.5582, 904.7863, 24.8906)){
-				SendClientMessage(playerid,0xFFFF00FF,"BÖRSE: {FFFFFF}Willkommen bei der Nova e-Sports Börse.");
-           		ShowPlayerDialog(playerid, DIALOG_TRADE, DIALOG_STYLE_LIST, "Nova e-Sports Börse", "Aktien kaufen\nAktien verkaufen\nAktienkurs einsehen", "Bestätigen", "Abbrechen");
+			if(IsPlayerInRangeOfPoint(playerid,10,tradeautomat[i][x],tradeautomat[i][y], tradeautomat[i][z])){
+				SendClientMessage(playerid,0xFFFF00FF,"B?SE: {FFFFFF}Willkommen bei der Nova e-Sports B?rse.");
+           		ShowPlayerDialog(playerid, DIALOG_TRADE, DIALOG_STYLE_LIST, "Nova e-Sports B?rse", "Aktien kaufen\nAktien verkaufen\nAktienkurs einsehen", "Best?igen", "Abbrechen");
+           		pData[playerid][moneyput][pData[playerid][aktbiz]]=i;
 	            return 1;
  			}
 		}
@@ -366,30 +384,32 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				//Aktien verkaufen
 				case 1:
 				{
-					SendClientMessage(playerid,0xFFFF00FF,"BÖRSE: {FFFFFF}Du hast erfolgreich deine Aktien verkauf!");
-					if(pData[playerid][moneyput] == 0) return SendClientMessage(playerid, -1, "FEHLER: Du hast keine Aktien bei diesem Biz erworben.");
+					SendClientMessage(playerid,0xFFFF00FF,"BÖRSE: {FFFFFF}Du hast erfolgreich deine Aktien verkauft!");
+					if(pData[playerid][moneyput][pData[playerid][aktbiz]] == 0) return SendClientMessage(playerid, -1, "FEHLER: Du hast keine Aktien bei diesem Biz erworben.");
 					new Float:diff;
 					if(pData[playerid][buy] == 1) diff = pointData[1][MAX_POINTS-1][val] - pData[playerid][put];
-					else if(pData[playerid][buy] == 2) diff = pData[playerid][put] - pointData[1][MAX_POINTS - 1][val];
+					else if(pData[playerid][buy] == 2) diff = pData[playerid][put] - pointData[pData[playerid][aktbiz]][MAX_POINTS - 1][val];
 					new multi = floatround(diff);
 					GivePlayerMoney(playerid, multi*pData[playerid][moneyput]);
 					new mstr[256];
 					SendClientMessage(playerid, -1, "ERFOLG: Du hast deine Aktien verkauft.");
 					format(mstr, 256, " %i.", multi*pData[playerid][moneyput]);
 					SendClientMessage(playerid, -1, mstr);
-					pData[playerid][moneyput] = 0;
+					pData[playerid][moneyput][pData[playerid][aktbiz]] = 0;
 					pData[playerid][put] = 0;
 					pData[playerid][buy] = 0;
 				}
 				//Aktienkurs anzeigen
 				case 2:
 				{
+
 					if(pData[playerid][showing] == 0)
 					{
 						GRAPHIC::ShowForPlayer(playerid, MY_GRAPH);
 	   					TextDrawShowForPlayer(playerid, TDEditor_PTD);
 						pData[playerid][showing] = 1;
 						TogglePlayerControllable(playerid,false);
+						GRAPHIC::ResetTD();
 					}
 					else
 					{
@@ -397,6 +417,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	    				TextDrawHideForPlayer(playerid, TDEditor_PTD);
 						pData[playerid][showing] = 0;
 						TogglePlayerControllable(playerid,true);
+						GRAPHIC::ResetTD();
 					}
 				}
 
@@ -410,7 +431,14 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 		if(response){
   			if(strlen(inputtext)>0)
 			{
+				new string[128];
 				SendClientMessage(playerid,0xFFFFFFFF,inputtext);
+				pData[playerid][buy][pData[playerid][aktbiz]]=strval(inputtext);
+				if(GetPlayerMoney(playerid)<strval(inputtext))return SendClientMessage(playerid,0xFFFFFFFF,"Du hast nicht genug Geld bei dir!");
+				format(string,sizeof(string),"ERFOLG: Du hast Aktien im Wert von $%i gekauft!");
+				SendClientMessage(playerid,0xFFFFFFFF,string);
+				GivePlayerMoney(playerid,GetPlayerMoney(playerid)-strval(inputtext));
+				
 			}else
 			{
                 SendClientMessage(playerid,0xFFFFFFFF,"FEHLER: Du hast keinen Wert eingegeben.");
