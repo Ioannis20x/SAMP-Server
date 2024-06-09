@@ -156,7 +156,61 @@ CreateObject(970, 364.83090, -2038.30005, 7.38000,   0.00000, 0.00000, 0.00000);
 CreateObject(970, 374.51849, -2038.30005, 7.38000,   0.00000, 0.00000, 0.00000);
 CreateObject(1215, 361.34109, -2038.30005, 7.38000,   0.00000, 0.00000, 0.00000);
 CreateObject(1215, 378.30801, -2038.30005, 7.38000,   0.00000, 0.00000, 0.00000);
-CreateObject(3816, 2108.20898, -2409.47681, 19.53530,   0.00000, 0.00000, 0.00000);
+CreateObject(3816, 2108.2089, -2409.4768, 19.5352, 0.0000, 0.0000, 0.0000); //no comment
+CreateObject(8652, -1991.6098, 463.6943, 35.0301, 0.0000, 0.0000, -89.8001); //shbbyhswall12_lvs
+CreateObject(8652, -1991.7932, 510.6133, 35.0301, 0.0000, 0.0000, 90.1998); //shbbyhswall12_lvs
+CreateObject(8652, -1976.9538, 419.0860, 35.0301, 0.0000, 0.0000, 0.1998); //shbbyhswall12_lvs
+CreateObject(8652, -1991.5736, 434.0944, 35.0301, 0.0000, 0.0000, -90.1001); //shbbyhswall12_lvs
+CreateObject(8041, -1990.3135, 544.7894, 39.6580, 0.0000, 0.0000, 179.8999); //apbarriergate06_lvS
+CreateObject(970, -1976.1235, 495.9456, 34.7096, 0.0000, 0.0000, 0.0000); //fencesmallb
+CreateObject(966, -1990.0072, 536.8251, 33.9790, 0.0000, 0.0000, -89.9999); //bar_gatebar01
+CreateObject(966, -1989.7832, 552.7077, 33.9790, 0.0000, 0.0000, 88.5001); //bar_gatebar01
+CreateObject(968, -1989.9910, 536.9186, 34.8343, -1.5000, -90.9999, -89.7999); //barrierturn
+CreateObject(968, -1989.7799, 552.6982, 34.8350, 0.1999, 90.8999, -91.1999); //barrierturn
+CreateObject(970, -1982.3139, 495.9456, 34.7096, 0.0000, 0.0000, 0.0000); //fencesmallb
+CreateObject(9131, -1979.3474, 495.9513, 35.2835, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+CreateObject(9131, -1985.1072, 496.1214, 35.2835, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+CreateObject(638, -1982.4216, 496.9989, 34.9377, 0.0000, 0.0000, -90.0999); //kb_planter+bush
+CreateObject(638, -1976.0107, 496.9877, 34.9377, 0.0000, 0.0000, -90.0999); //kb_planter+bush
+CreateObject(9131, -1973.3358, 495.9513, 35.2835, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+CreateObject(970, -1973.0250, 499.2787, 34.7096, 0.0000, 0.0000, 90.1000); //fencesmallb
+CreateObject(9131, -1973.1256, 502.7015, 35.2835, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+CreateObject(970, -1973.0354, 505.8088, 34.7096, 0.0000, 0.0000, 90.1000); //fencesmallb
+CreateObject(9131, -1973.1256, 508.6915, 35.2835, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+CreateObject(970, -1973.0457, 511.6487, 34.7096, 0.0000, 0.0000, 90.1000); //fencesmallb
+CreateObject(9131, -1973.1256, 514.5621, 35.2835, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+CreateObject(970, -1973.0561, 517.5886, 34.7096, 0.0000, 0.0000, 90.1000); //fencesmallb
+CreateObject(9131, -1973.1256, 520.4230, 35.2835, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+CreateObject(970, -1973.0668, 523.2681, 34.7096, 0.0000, 0.0000, 90.1000); //fencesmallb
+CreateObject(9131, -1973.1256, 525.9238, 35.2835, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+CreateObject(970, -1985.0660, 499.3980, 34.7096, 0.0000, 0.0000, 90.1000); //fencesmallb
+CreateObject(9131, -1985.1072, 502.5120, 35.2835, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+CreateObject(970, -1985.0283, 505.7880, 34.7096, 0.0000, 0.0000, 90.1000); //fencesmallb
+CreateObject(9131, -1985.1127, 508.6915, 35.2835, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+CreateObject(970, -1984.9670, 511.6275, 34.7096, 0.0000, 0.0000, 90.1000); //fencesmallb
+CreateObject(9131, -1985.0942, 514.5621, 35.2835, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+CreateObject(970, -1985.0759, 517.5677, 34.7096, 0.0000, 0.0000, 90.1000); //fencesmallb
+CreateObject(9131, -1985.1354, 520.4230, 35.2835, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+CreateObject(970, -1985.0363, 523.2471, 34.7096, 0.0000, 0.0000, 90.1000); //fencesmallb
+CreateObject(9131, -1985.1756, 525.9238, 35.2835, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+CreateObject(9131, -1991.9455, 525.5435, 35.2835, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+CreateObject(9131, -1991.7137, 535.1536, 35.2835, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+CreateObject(9131, -1991.6752, 554.4447, 35.2835, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+CreateObject(970, -1991.0310, 530.5766, 34.7096, 0.0000, 0.0000, 90.1000); //fencesmallb
+CreateObject(638, -1990.6274, 557.5250, 34.9377, 0.0000, 0.0000, 0.6000); //kb_planter+bush
+CreateObject(970, -1991.6787, 557.8062, 34.7096, 0.0000, 0.0000, 90.1000); //fencesmallb
+CreateObject(9131, -1991.2548, 560.8354, 35.2835, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+CreateObject(638, -1990.3437, 530.5269, 34.9377, 0.0000, 0.0000, 0.6000); //kb_planter+bush
+CreateObject(970, -1988.1494, 560.9348, 34.7096, 0.0000, 0.0000, -0.0999); //fencesmallb
+CreateObject(638, -1988.1894, 560.2968, 34.9377, 0.0000, 0.0000, -89.1998); //kb_planter+bush
+CreateObject(9131, -1984.7636, 560.7854, 35.2835, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+CreateObject(9131, -1973.5043, 560.7854, 35.2835, 0.0000, 0.0000, 0.0000); //shbbyhswall13_lvs
+CreateObject(970, -1970.6091, 560.9041, 34.8096, 0.0000, 0.0000, -0.0999); //fencesmallb
+CreateObject(638, -1970.6475, 560.2916, 34.9377, 0.0000, 0.0000, -89.1998); //kb_planter+bush
+CreateObject(966, -1975.2976, 560.8051, 33.9790, 0.0000, 0.0000, -1.0999); //bar_gatebar01
+CreateObject(968, -1975.4420, 560.8090, 34.8725, -0.7000, 90.4997, 179.7002); //barrierturn
+
+
 
 //Newsvan
 CreateDynamicObject(16155,-218.41751098633,1412.0537109375,28.464504241943,0,0,285.24597167969);
@@ -206,11 +260,6 @@ RemoveBuildingForPlayer(playerid, 1412, 1996.8281, -2227.3828, 13.7891, 0.25);
 RemoveBuildingForPlayer(playerid, 1412, 1991.5547, -2227.4141, 13.7578, 0.25);
 RemoveBuildingForPlayer(playerid, 1412, 1986.2813, -2227.4141, 13.7578, 0.25);
 RemoveBuildingForPlayer(playerid, 1412, 2002.1094, -2227.3438, 13.8281, 0.25);
-RemoveBuildingForPlayer(playerid, 3672, 2112.9375, -2384.6172, 18.8828, 0.25);
-RemoveBuildingForPlayer(playerid, 3629, 2112.9375, -2384.6172, 18.8828, 0.25);
-RemoveBuildingForPlayer(playerid, 3672, 2112.9375, -2384.6172, 18.8828, 0.25);
-RemoveBuildingForPlayer(playerid, 3629, 2112.9375, -2384.6172, 18.8828, 0.25);
-
 //Pier
 RemoveBuildingForPlayer(playerid, 6463, 389.7734, -2028.4688, 19.8047, 0.25);
 RemoveBuildingForPlayer(playerid, 6464, 379.0625, -2065.0234, 11.7969, 0.25);
@@ -264,11 +313,11 @@ RemoveBuildingForPlayer(playerid, 1308, 400.7578, -2081.1875, 6.5938, 0.25);
 RemoveBuildingForPlayer(playerid, 1308, 400.7578, -2050.4844, 6.5938, 0.25);
 
 //SAM AG
-RemoveBuildingForPlayer(playerid, 10938, -1909.5547, 497.2188, 25.7109, 0.25);
-RemoveBuildingForPlayer(playerid, 11144, -1909.5547, 497.2188, 25.7109, 0.25);
+RemoveBuildingForPlayer(playerid, 3629, 2112.9399, -2384.6201, 18.8827, 0.10); // arhang_LAS
+RemoveBuildingForPlayer(playerid, 3672, 2112.9399, -2384.6201, 18.8827, 0.10); // LOD Model of arhang_LAS
+RemoveBuildingForPlayer(playerid, 10938, -1909.5500, 497.2189, 25.7108, 0.10); // Groundbit84_SFS
+RemoveBuildingForPlayer(playerid, 11144, -1909.5500, 497.2189, 25.7108, 0.10); // LOD Model of Groundbit84_SFS
 
-RemoveBuildingForPlayer(playerid, 3672, 2112.9375, -2384.6172, 18.8828, 0.25);
-RemoveBuildingForPlayer(playerid, 3629, 2112.9375, -2384.6172, 18.8828, 0.25);
 
 //LS PARK
 RemoveBuildingForPlayer(playerid, 4057, 1479.5547, -1693.1406, 19.5781, 0.25);

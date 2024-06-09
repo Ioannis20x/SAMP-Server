@@ -646,12 +646,15 @@ CreateToolbarKeyTextdraw(playerid, bool:mousemode) {
     }
 
     if( mousemode ) {
-        g_ToolbarKeyTextdraw[playerid] = CreatePlayerTextDraw(playerid, 637.0, 296.0, "~w~Press ~r~ESC ~w~to disable mouse mode");
+       // g_ToolbarKeyTextdraw[playerid] = CreatePlayerTextDraw(playerid, 637.0, 296.0, "~w~Press ~r~ESC ~w~to disable mouse mode");
+        SendClientMessage(playerid,255,"~w~Press ~r~ESC ~w~to disable mouse mode");
     } else {
         if( GetPlayerState(playerid) == PLAYER_STATE_SPECTATING ) {
-            g_ToolbarKeyTextdraw[playerid] = CreatePlayerTextDraw(playerid, 637.0, 425.0, "~w~Press ~r~~k~~PED_DUCK~ ~w~to enable mouse mode");
+//            g_ToolbarKeyTextdraw[playerid] = CreatePlayerTextDraw(playerid, 637.0, 425.0, "~w~Press ~r~~k~~PED_DUCK~ ~w~to enable mouse mode");
+              SendClientMessage(playerid,255,"~w~Press ~r~~k~~PED_DUCK~ ~w~to enable mouse mode");
         } else {
-            g_ToolbarKeyTextdraw[playerid] = CreatePlayerTextDraw(playerid, 637.0, 425.0, "~w~Press ~r~~k~~CONVERSATION_YES~ ~w~to enable mouse mode");
+//            g_ToolbarKeyTextdraw[playerid] = CreatePlayerTextDraw(playerid, 637.0, 425.0, "~w~Press ~r~~k~~CONVERSATION_YES~ ~w~to enable mouse mode");
+            SendClientMessage(playerid,255,"~w~Press ~r~~k~~CONVERSATION_YES~ ~w~to enable mouse mode");
         }
     }
 
