@@ -227,7 +227,7 @@ public OnUserCheck(playerid)
 	if(num_rows==0)
 	{
 	    //Registrierung
-	    ShowPlayerDialog(playerid,DIALOG_REGISTER,DIALOG_STYLE_INPUT,"Registrierung","Gib bitte dein gewünschtes Passwort an:","Okay","Abbrechen");
+	    ShowPlayerDialog(playerid,DIALOG_REGISTER,DIALOG_STYLE_INPUT,"Registrierung","Gib bitte dein gewï¿½nschtes Passwort an:","Okay","Abbrechen");
 	}
 	else
 	{
@@ -289,7 +289,7 @@ public OnPlayerDisconnect(playerid, reason)
 	format(szString, sizeof szString, "%s hat den Server verlassen (%s).", playerName, szDisconnectReason[reason]);
 	new Float:x,Float:y,Float:z;
 	GetPlayerPos(playerid,x,y,z);
-	for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) //GetPlayerPoolSize ist die höchste online playerid   | i repräsentiert die aktuelle id die gecheckt wird
+	for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) //GetPlayerPoolSize ist die hï¿½chste online playerid   | i reprï¿½sentiert die aktuelle id die gecheckt wird
     {
         if(IsPlayerInRangeOfPoint(i, 7.0, x, y, z))
         {
@@ -711,7 +711,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	        {
 	            //Kleiner als 4 Zeichen
 	            SendClientMessage(playerid,COLOR_RED,"Dein Passwort muss mindestens 4 Zeichen lang sein.");
-	            ShowPlayerDialog(playerid,DIALOG_REGISTER,DIALOG_STYLE_INPUT,"Registrierung","Gib bitte dein gewünschtes Passwort an:","Okay","Abbrechen");
+	            ShowPlayerDialog(playerid,DIALOG_REGISTER,DIALOG_STYLE_INPUT,"Registrierung","Gib bitte dein gewï¿½nschtes Passwort an:","Okay","Abbrechen");
 	        }
 	    }
 	    else
@@ -745,7 +745,7 @@ if(!IsPlayerConnected(pID))return SendClientMessage(playerid,COLOR_RED,"FEHLER: 
 new string[128],selfstring[128];
 format(string,sizeof(string),"DUEL: %s hat dich auf ein Duel herausgefordert.",getPlayerName(playerid));
 SendClientMessage(pID, COLOR_ORANGE,string);
-SendClientMessage(pID,COLOR_WHITE,"» Gib /accept1o1 oder /cancel1o1 ein. Diese Anfrage verfällt automatisch in 60 Sekunden.");
+SendClientMessage(pID,COLOR_WHITE,"ï¿½ Gib /accept1o1 oder /cancel1o1 ein. Diese Anfrage verfÃ¤llt automatisch in 60 Sekunden.");
 
 format(selfstring,sizeof(selfstring),"DUEL: Du hast %s zu einem Duell eingeladen. Warte auf seine Antwort.",getPlayerName(pID));
 SendClientMessage(playerid, COLOR_YELLOW,selfstring);
@@ -988,7 +988,7 @@ CMD:use(playerid,params[])
 
     GetPlayerPos(playerid, x,y,z);
     SendClientMessage(playerid,COLOR_GREY,"Du hast einen Donut gegessen (+80hp)!");
-    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) //GetPlayerPoolSize ist die höchste online playerid   | i repräsentiert die aktuelle id die gecheckt wird
+    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) //GetPlayerPoolSize ist die hï¿½chste online playerid   | i reprï¿½sentiert die aktuelle id die gecheckt wird
     {
         if(IsPlayerInRangeOfPoint(i, 7.0, x, y, z))
         {
@@ -1006,7 +1006,7 @@ CMD:use(playerid,params[])
     GetPlayerPos(playerid, x,y,z);
     GetPlayerHealth(playerid,health);
     if(health > 80)return SendClientMessage(playerid,COLOR_GREY,"Du kannst Hawaiian Green erst ab 80HP nutzen.");
-    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) //GetPlayerPoolSize ist die höchste online playerid   | i repräsentiert die aktuelle id die gecheckt wird
+    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) //GetPlayerPoolSize ist die hï¿½chste online playerid   | i reprï¿½sentiert die aktuelle id die gecheckt wird
     {
         if(IsPlayerInRangeOfPoint(i, 7.0, x, y, z))
         {
@@ -1024,7 +1024,7 @@ CMD:use(playerid,params[])
     GetPlayerPos(playerid, x,y,z);
     GetPlayerHealth(playerid,health);
     if(health > 80)return SendClientMessage(playerid,COLOR_GREY,"Du kannst Hawaiian Green erst ab 80HP nutzen.");
-    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) //GetPlayerPoolSize ist die höchste online playerid   | i repräsentiert die aktuelle id die gecheckt wird
+    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) //GetPlayerPoolSize ist die hï¿½chste online playerid   | i reprï¿½sentiert die aktuelle id die gecheckt wird
     {
         if(IsPlayerInRangeOfPoint(i, 7.0, x, y, z))
         {
@@ -1042,7 +1042,7 @@ CMD:use(playerid,params[])
     GetPlayerPos(playerid, x,y,z);
     GetPlayerHealth(playerid,health);
     if(health > 100)return SendClientMessage(playerid,COLOR_GREY,"Du kannst keine Drogen nehmen, da du 100HP hast.");
-    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) //GetPlayerPoolSize ist die höchste online playerid   | i repräsentiert die aktuelle id die gecheckt wird
+    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) //GetPlayerPoolSize ist die hï¿½chste online playerid   | i reprï¿½sentiert die aktuelle id die gecheckt wird
     {
         if(IsPlayerInRangeOfPoint(i, 7.0, x, y, z))
         {
@@ -1131,7 +1131,7 @@ CMD:eveh(playerid,params[])
 	if(!strcmp(item, "add", false))
  	{
   	if(!isAdmin(playerid,2))return SendClientMessage(playerid,COLOR_GREY,"Du bist kein "#SERVERTAG" Mitglied!");
-	ShowPlayerDialog(playerid,DIALOG_VSPAWN,DIALOG_STYLE_LIST,"Eventsystem","Autos/Motorräder\nBoote\nFlugzeuge/Helis\nsonstige","Weiter","Abbrechen");
+	ShowPlayerDialog(playerid,DIALOG_VSPAWN,DIALOG_STYLE_LIST,"Eventsystem","Autos/Motorrï¿½der\nBoote\nFlugzeuge/Helis\nsonstige","Weiter","Abbrechen");
 	return 1;
 	}
 	return 1;
@@ -1225,8 +1225,8 @@ CMD:makeadmin(playerid,params[])
 	if(a_level > 3 && strcmp(getPlayerName(playerid),"Ioannis_Gutenberg"))return SendClientMessage(playerid,COLOR_WHITE,"FEHLER: du bist nicht befugt!");
 	sInfo[pID][adminlevel]=a_level;
 	savePlayer(pID);
-	SendClientMessage(pID,COLOR_YELLOW,"Dein Adminrang wurde geändert.");
-	SendClientMessage(playerid,COLOR_YELLOW,"Du hast den Adminrang geändert.");
+	SendClientMessage(pID,COLOR_YELLOW,"Dein Adminrang wurde geï¿½ndert.");
+	SendClientMessage(playerid,COLOR_YELLOW,"Du hast den Adminrang geï¿½ndert.");
 	savePlayer(pID);
 	return 1;
 }
@@ -1283,7 +1283,7 @@ CMD:addschirmex(playerid,params[])
 
     new Float:x, Float:y, Float:z;
     GetPlayerPos(playerid, x,y,z);
-    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) //GetPlayerPoolSize ist die höchste online playerid   | i repräsentiert die aktuelle id die gecheckt wird
+    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) //GetPlayerPoolSize ist die hï¿½chste online playerid   | i reprï¿½sentiert die aktuelle id die gecheckt wird
     {
         if(IsPlayerInRangeOfPoint(i, 7.0, x, y, z))
         {
@@ -1319,7 +1319,7 @@ CMD:addequipex(playerid,params[])
 
     new Float:x, Float:y, Float:z;
     GetPlayerPos(playerid, x,y,z);
-    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) //GetPlayerPoolSize ist die höchste online playerid   | i repräsentiert die aktuelle id die gecheckt wird
+    for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) //GetPlayerPoolSize ist die hï¿½chste online playerid   | i reprï¿½sentiert die aktuelle id die gecheckt wird
     {
         if(IsPlayerInRangeOfPoint(i, 7.0, x, y, z))
         {
@@ -1329,7 +1329,7 @@ CMD:addequipex(playerid,params[])
             GivePlayerWeapon(i,31,400);
             SetPlayerArmour(i,100);
             SetPlayerHealth(i,100);
-            SendClientMessage(i,COLOR_YELLOW,"EVENT: Eventausrüstung hinzugefügt.");
+            SendClientMessage(i,COLOR_YELLOW,"EVENT: Eventausrï¿½stung hinzugefï¿½gt.");
         }
     }
     return 1;
@@ -1346,7 +1346,7 @@ GivePlayerWeapon(i,29,400);
 GivePlayerWeapon(i,31,400);
 SetPlayerArmour(i,100);
 SetPlayerHealth(i,100);
-SendClientMessage(i,COLOR_YELLOW,"EVENT: Eventausrüstung hinzugefügt.");
+SendClientMessage(i,COLOR_YELLOW,"EVENT: Eventausrï¿½stung hinzugefï¿½gt.");
 return 1;
 }
 
@@ -1355,11 +1355,11 @@ CMD:dropguns(playerid,params[])
 ResetPlayerWeapons(playerid);
 new Float:x, Float:y, Float:z,string[256];
 GetPlayerPos(playerid, x,y,z);
-for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) //GetPlayerPoolSize ist die höchste online playerid   | i repräsentiert die aktuelle id die gecheckt wird
+for(new i = 0, j = GetPlayerPoolSize(); i <= j; i++) //GetPlayerPoolSize ist die hï¿½chste online playerid   | i reprï¿½sentiert die aktuelle id die gecheckt wird
  {
 	    if(IsPlayerInRangeOfPoint(i, 7.0, x, y, z))
         {
-        format(string,sizeof(string),"%s lässt seine Waffen fallen.",getPlayerName(playerid));
+        format(string,sizeof(string),"%s lï¿½sst seine Waffen fallen.",getPlayerName(playerid));
 		SendClientMessage(playerid,COLOR_HRED,string);
        }
 }
@@ -1526,7 +1526,7 @@ CMD:help(playerid,params[])
 CMD:ahelp(playerid,params[])
 {
 if(!isAdmin(playerid,2))return SendClientMessage(playerid,COLOR_GREY,"Du bist kein Admin/Dein Adminrang ist zu niedrig.");
-SendClientMessage(playerid,COLOR_WHITE,":__________________ {4a9edf}Befehle für Moderatoren{FFFFFF} __________________");
+SendClientMessage(playerid,COLOR_WHITE,":__________________ {4a9edf}Befehle fï¿½r Moderatoren{FFFFFF} __________________");
 SendClientMessage(playerid,COLOR_WHITE,"{4a9edf}*** SUPPORT ***{FFFFFF} /w(hisper) /areport /showreport /cancelhelp /aredirect /respawnplayer /reviveme /fuelcar /weather");
 SendClientMessage(playerid,COLOR_WHITE,"{4a9edf}*** SUPPORT ***{FFFFFF} /cleartext /respawn /lvlcheck /respawncar /getvehicles /gethp /check /respawnhelp /schnorrer");
 SendClientMessage(playerid,COLOR_WHITE,"{4a9edf}*** SUPPORT ***{FFFFFF} /checkweapons /o(oc) /spec /specoff /freeze /ban /unfreeze /slap /warn /mute /checkmute /kick");
@@ -1545,7 +1545,7 @@ SendClientMessage(playerid,COLOR_WHITE,"{4a9edf}*** RACE EVENT ***{FFFFFF} /newr
 SendClientMessage(playerid,COLOR_WHITE,"{4a9edf}*** RACE EVENT ***{FFFFFF} /cp /cpsize 5-30 /cpheal 0/1 /cpnitro 0/1 /cpsave /savetrack /cpdel");
 SendClientMessage(playerid,COLOR_WHITE,"{4a9edf}*** RACE EVENT ***{FFFFFF} /keinekollisionenmehrbitte /wiederkollisionenbitte");
 if(!isAdmin(playerid,3))return 0;
-SendClientMessage(playerid,COLOR_WHITE,"__________________ {df4a4a}Befehle für Administratoren{FFFFFF} __________________");
+SendClientMessage(playerid,COLOR_WHITE,"__________________ {df4a4a}Befehle fï¿½r Administratoren{FFFFFF} __________________");
 SendClientMessage(playerid,COLOR_WHITE,"{df4a4a}*** SUPPORT ***{FFFFFF} /skasse /respawnallveh /setage /removeptv /reviveplayer /setsex /sethp /setarmor");
 SendClientMessage(playerid,COLOR_WHITE,"{df4a4a}*** SUPPORT ***{FFFFFF} /setwarns /addperso /setstat (Ziviskin und Fraktionssperre) /jail /removespec");
 SendClientMessage(playerid,COLOR_WHITE,"{df4a4a}*** FRAKTIONEN ***{FFFFFF} /ainvite /makeleader /auninvite /agiverank /aseturank");
@@ -1554,12 +1554,12 @@ SendClientMessage(playerid,COLOR_WHITE,"{df4a4a}*** SYSTEM ***{FFFFFF} /reloadpr
 SendClientMessage(playerid,COLOR_WHITE,"{df4a4a}*** CHEATER ***{FFFFFF} /blockmods");
 SendClientMessage(playerid,COLOR_WHITE,"{df4a4a}*** FRAKTIONSBESTRAFUNGEN ***{FFFFFF} /factionlocks");
 SendClientMessage(playerid,COLOR_WHITE,"{df4a4a}*** EVENT ***{FFFFFF} /accept event /fourdive /hyperdive");
-SendClientMessage(playerid,COLOR_WHITE,"{df4a4a}*** HÄUSER ***{FFFFFF} /edit /asellhouse /setarchitect");
-SendClientMessage(playerid,COLOR_WHITE,"{df4a4a}*** NEULINGSCHAT ***{FFFFFF} /setnc (zum Erlauben des Neulingschats für andere Spieler)");
+SendClientMessage(playerid,COLOR_WHITE,"{df4a4a}*** Hï¿½USER ***{FFFFFF} /edit /asellhouse /setarchitect");
+SendClientMessage(playerid,COLOR_WHITE,"{df4a4a}*** NEULINGSCHAT ***{FFFFFF} /setnc (zum Erlauben des Neulingschats fï¿½r andere Spieler)");
 SendClientMessage(playerid,COLOR_WHITE,"{df4a4a}*** BUSLINIEN ***{FFFFFF} /editroutes /addstop /stoplineedit /addbusstop /delbusstop");
 SendClientMessage(playerid,COLOR_WHITE,"{df4a4a}*** GANGWAR ***{FFFFFF} /agangwar /gwmark");
 if(!isAdmin(playerid,4))return 0;
-SendClientMessage(playerid,COLOR_WHITE,"__________________ {D5E809}Befehle für Super Administratoren{FFFFFF} __________________");
+SendClientMessage(playerid,COLOR_WHITE,"__________________ {D5E809}Befehle fï¿½r Super Administratoren{FFFFFF} __________________");
 SendClientMessage(playerid,COLOR_WHITE,"{D5E809}*** SYSTEM ***{FFFFFF} /awplayer /agivelicense /allow(sf/bs) /block(sf/bs) /extend(sf/bs) /setmail /adelplant /adellsd");
 SendClientMessage(playerid,COLOR_WHITE,"{D5E809}*** SYSTEM ***{FFFFFF} /asellmbiz /aeditmbiz /enablebizattack");
 SendClientMessage(playerid,COLOR_WHITE,"{D5E809}*** GRUPPIERUNGEN ***{FFFFFF} /renamegroup /freegroupbank");
@@ -1633,7 +1633,7 @@ GivePlayerWeapon(playerid,33,400);//Rifle
 return 1;
 }
 stock changeweather(){
-	SendClientMessageToAll(COLOR_ORANGE,"NR Bot: Es liegt eine Wetteränderung in ganz San Andreas vor.");
+	SendClientMessageToAll(COLOR_ORANGE,"NR Bot: Es liegt eine Wetterï¿½nderung in ganz San Andreas vor.");
 	SetWeather(random(sizeof(weatherids)));
 	return 0;
 }
